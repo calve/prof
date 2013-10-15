@@ -36,11 +36,14 @@ fi
 #Je n'arrive pas a récupéré le é de enregistré, la page tmp semble avoir un encodage bizarre
 cat tmp | grep -o "Le fichier .* est bien enregistr"
 
-if [ $? -ne "0" ]; then
+
+if [ $? -ne "0" ]; then #Si la derniere commande n'a pas réussie ...
+    rm tmp cookie
     echo "Erreur dans l'upload du fichier. Vérifiez ce que vous faites, et que le TP que vous essayé de rendre est bien ouvert !"
     exit 1
 fi
-rm tmp
+
+rm tmp cookie
 exit 0
 
     
