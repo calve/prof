@@ -12,7 +12,7 @@ echo
 #On initialize la session
 curl -ss $baseurl"index.php"  -c cookie > tmp
 
-curl -ss $baseurl"login.php" --data "login=$login" --data "passwd=$passwd" --data "++O+K++=Valider" -b cookie > tmp
+curl -ss $baseurl"login.php" --data "login=$login" --data-urlencode "passwd=$passwd" --data "++O+K++=Valider" -b cookie > tmp
 
 # On récupere la liste des ids 
                                                 #awk -F"VALUE=\"|\">|</OPTION>" '{ print $3 " -> " $2}'
