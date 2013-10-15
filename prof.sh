@@ -2,7 +2,7 @@
 # CC0 No rights reserved
 
 baseurl="https://prof.fil.univ-lille1.fr/"
-login=debusschere
+login=login
 
 #On récupère le mot de passe
 echo -n Password: 
@@ -17,11 +17,11 @@ curl -ss $baseurl"login.php" --data "login=$login" --data "passwd=$passwd" --dat
 # On récupere la liste des ids 
                                                 #awk -F"VALUE=\"|\">|</OPTION>" '{ print $3 " -> " $2}'
 curl -ss $baseurl"select_projet.php" -b cookie | grep "<\/OPTION>" | awk -F"VALUE=\\\"|\">|</OPTION>" '{ print $3 " -> " $2}'
-read -p "Please select an option value above : " projectvalue
+read -p "Please type one of the numbers above : " projectvalue
 
 #On récupere la liste et l'état des TPS
-curl -ss $baseurl"main.php" --data "id_projet=$projectvalue" -b cookie | grep "echeance"
-read -p "Please select an id above : " idtp
+curl -ss $baseurl"main.php" --data "id_projet=$projectvalue" -b cookie | grep echeance | colrm 1 46 | sed "s/')\">\|<\/a><\/td>/ /g"
+read -p "Please type on of the numbers above : " idtp
 
 curl -ss $baseurl"upload.php" --data "id=$idtp" -b cookie > tmp
 
