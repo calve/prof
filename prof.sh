@@ -2,7 +2,7 @@
 # CC0 No rights reserved
 
 baseurl="https://prof.fil.univ-lille1.fr/"
-login=login
+login=debusschere
 
 #On récupère le mot de passe
 echo -n Password: 
@@ -33,10 +33,10 @@ else
     curl -ss $baseurl"upload2.php" --form "fichier1=@$file" --form "MAX_FILE_SIZE=1000000" -b cookie > tmp
 fi
 
+#Je n'arrive pas a récupéré le é de enregistré, la page tmp semble avoir un encodage bizarre
+cat tmp | grep -o "Le fichier .* est bien enregistr"
 
-cat tmp | grep "Le fichier .* est bien enregistr"
-
-if [ $? ]; then
+if [ $? -ne "0" ]; then
     echo "Erreur dans l'upload du fichier. Vérifiez ce que vous faites, et que le TP que vous essayé de rendre est bien ouvert !"
     exit 1
 fi
