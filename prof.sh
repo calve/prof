@@ -1,8 +1,11 @@
 ## Script pour envoyé un fichier sur prof
 # CC0 No rights reserved
 
+# remplacez login par votre nom d'utilisateur
+# usage : ./prof.sh [archive.tar.gz]
+
 baseurl="https://prof.fil.univ-lille1.fr/"
-login=debusschere
+login=login
 
 #On récupère le mot de passe
 echo -n Password: 
@@ -15,7 +18,6 @@ curl -ss $baseurl"index.php"  -c cookie > tmp
 curl -ss $baseurl"login.php" --data "login=$login" --data-urlencode "passwd=$passwd" --data "++O+K++=Valider" -b cookie > tmp
 
 # On récupere la liste des ids 
-                                                #awk -F"VALUE=\"|\">|</OPTION>" '{ print $3 " -> " $2}'
 curl -ss $baseurl"select_projet.php" -b cookie | grep "<\/OPTION>" | awk -F"VALUE=\\\"|\">|</OPTION>" '{ print $3 " -> " $2}'
 read -p "Please type one of the numbers above : " projectvalue
 
