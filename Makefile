@@ -1,6 +1,6 @@
 OCAMLC = ocamlc
 CFLAGS = -I +curl curl.cma str.cma
-OUT=connection
+OUT=prof
 SRCDIR=src
 
 .PHONY : all clean

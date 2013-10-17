@@ -1,14 +1,23 @@
 OCAMLC = ocamlc
 CFLAGS = -I +curl curl.cma str.cma
-OBJS=connection
+
+#.cmo files needed to build the executable
+OBJS=connection.cmo
+OUT=prof
 
 .PHONY : all clean
-all: $(OBJS)
+all: $(OUT)
 
+$(OUT) : $(OBJS)
+	$(OCAMLC) $(CFLAGS) $(OBJS) $@.ml -o $@
+
+#How to build a cmi file from a mli file
 %.cmi : %.mli
 	$(OCAMLC) $(CFLAGS) $< -c
-%:	%.ml %.cmi
-	$(OCAMLC) $(CFLAGS) $< -o $@
+
+#How to build a cmo file from one ml and one cmi file
+%.cmo:	%.ml %.cmi
+	$(OCAMLC) $(CFLAGS) $< -c
 
 clean:
-	$(RM) -Rdv *.cmi *.cmo $(OBJS)
+	$(RM) -Rdv *.cmi *.cmo $(OBJS) $(OUT)
