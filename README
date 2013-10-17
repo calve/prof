@@ -1,0 +1,39 @@
+###########################################################################
+## prof                                                                  ##
+## A -not that much- useful program to upload your work on PROF          ##
+##                                                                       ##
+## Get the newest version on http://github.com/calve/prof                ##
+###########################################################################
+
+########### REQUIREMENTS :
+ * An ocaml compiler
+ * ocurl (on ocaml static bind to libcurl)
+
+########################################################################
+You need to install ocurl (an ocaml bindings to libcurl) on your system.
+########################################################################
+
+ArchLinux users may find it on AUR
+Ubuntu users may find an libcurl-ocaml on universe
+Others can get ocurl archive here : http://sourceforge.net/projects/ocurl/
+and then (be sure to be in ocurl.tar.gz directory)
+  > tar xfz ocurl-[YOUR-DOWNLOADED-VERSION].tar.gz
+  > cd curl
+  > ./configure
+  > make
+  > make install
+If it fails, please check that curl is effectively installed on your system, but it is already there in most cases.
+
+
+############ COMPILATION
+
+To compile prof, just type make
+
+
+############ CHANGELOG
+
+ - connect to the prof website, get cookie, log and retrieve an UE list
+
+############ CONTACT
+calvinh34 at gmail
+Bugs, patches and suggestions are welcome !
