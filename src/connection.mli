@@ -27,3 +27,8 @@ val get_TP_list : (Curl.t * Buffer.t) -> int -> (int * string * bool) list
  *)
 val upload : (Curl.t * Buffer.t) -> int -> string -> unit
 
+(* delete connection tp_id
+ * Supprime le fichier associé au tp tp_id sur le serveur de prof
+ *)
+val delete : (Curl.t * Buffer.t) -> int -> unit
+

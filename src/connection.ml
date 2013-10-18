@@ -187,3 +187,9 @@ let upload c tp_id file =
   let connection = fst c in
   fetch connection (baseURL^"upload.php?id="^(string_of_int tp_id));
 ;;
+
+(* Delete the file associated with tp_id on the prof server *)
+let delete c tp_id =
+  let connection = fst c in
+  fetch connection (baseURL^"delete.php?id="^(string_of_int tp_id));
+;;
