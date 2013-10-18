@@ -32,6 +32,7 @@ let init_connection () =
   let result = Buffer.create 16384 in
   let connection = Curl.init() in
   Curl.set_writefunction connection (writer result);
+  Curl.set_verbose connection true;
 
   (* On spécifie le cookie *)
   (*Curl.set_cookiefile connection cookieFilePath;*)
@@ -42,9 +43,10 @@ let init_connection () =
 (* Get a page
  * Get ressources specified at url using connection, putting output in result
  *)
-let fetch connection url  =
+let fetch connection url =
   Curl.set_url connection url;
-  Curl.perform connection
+  Curl.perform connection;
+  Curl.set_post connection false
 
 (* fetch cookies
 * We'll need to get the cookies before doing anything ....
@@ -52,8 +54,8 @@ let fetch connection url  =
 let getCookies c =
   let connection = fst c in
   Curl.set_cookiejar connection cookieFilePath;
-  fetch connection (baseURL^"index.php");
-;;
+  fetch connection (baseURL^"index.php")
+
 
 (*
 * Log l'utilisateur
@@ -125,6 +127,7 @@ let get_UE_list c =
   in
 
   let connection = fst c in
+  Curl.set_post connection false;
   fetch connection (baseURL^"select_projet.php");
   let page = Buffer.contents (snd c) in
   parse_page page
