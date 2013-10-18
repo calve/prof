@@ -49,9 +49,11 @@ let _ =
       Connection.log c login password;
       let ue_list = Connection.get_UE_list c in
       print_ue_list ue_list;
-      let ue_id = int_of_string (ask "id ? ") in
+      let ue_id = int_of_string (ask "ue id ? ") in
       let tmp = Connection.get_TP_list c ue_id in
       print_tp_list tmp;
+      let tp_id = int_of_string (ask "tp id ? ") in
+      Connection.upload c tp_id "test.txt";
     with
     | Curl.CurlException (reason, code, str) ->
       Printf.printf "Error: %s\n" str

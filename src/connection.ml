@@ -1,21 +1,20 @@
 let baseURL = "https://prof.fil.univ-lille1.fr/";;
 let cookieFilePath = "cookie";;
-  
+
 (*
  * Inspired from ocurl.ml, an examples files provided in ocurl
  *)
 
-(**
-   * Write some datas
-   * Buffer.t -> string -> int
-*)
+(*
+ * Write some datas * Buffer.t -> string -> int
+ *)
 let writer accum data =
   Buffer.add_string accum data;
   String.length data
     
-(**
-   * Show some datas as string
-*)
+(*
+ * Show some datas as string
+ *)
 let showContent content =
   Printf.printf "%s" (Buffer.contents content);
   flush stdout
@@ -28,55 +27,58 @@ let showInfo connection =
     
 let init_connection () =
   Curl.global_init Curl.CURLINIT_GLOBALALL;
-  
+ 
   let result = Buffer.create 16384 in
   let connection = Curl.init() in
+  Curl.set_verbose connection true;
   Curl.set_writefunction connection (writer result);
   Curl.set_verbose connection true;
 
   (* On spécifie le cookie *)
-  (*Curl.set_cookiefile connection cookieFilePath;*)
+  (* Curl.set_cookiefile connection cookieFilePath;*)
   (connection,result)
 ;; 
 
-    
+
 (* Get a page
  * Get ressources specified at url using connection, putting output in result
  *)
+
 let fetch connection url =
+  Printf.printf "Retriving %s ...\n" (url);
+  flush stdout;
   Curl.set_url connection url;
   Curl.perform connection;
   Curl.set_post connection false
 
 (* fetch cookies
-* We'll need to get the cookies before doing anything ....
-*)
+ * We'll need to get the cookies before doing anything ....
+ *)
 let getCookies c =
   let connection = fst c in
   Curl.set_cookiejar connection cookieFilePath;
   fetch connection (baseURL^"index.php")
 
-
 (*
-* Log l'utilisateur
-*)  
+ * Log l'utilisateur
+ *)  
 let log c login password =
   getCookies c ;
   let connection = fst c in
   Curl.set_post connection true;
   Curl.set_cookiefile connection cookieFilePath;
-
+  
   (* On crée la liste de ce qu'on passera par FORM *)
   let loginOption = Curl.CURLFORM_CONTENT("login",login,Curl.CONTENTTYPE "text/html") in
   let passwdOption = Curl.CURLFORM_CONTENT("passwd",password,Curl.CONTENTTYPE "text/html") in (** TODO -- encoder l'url*)
   let validerOption = Curl.CURLFORM_CONTENT("++O+K++","Valider",Curl.CONTENTTYPE "text/html") in
-
+  
   (* On donne tout a manger à Curl *)
   Curl.set_httppost connection [loginOption;passwdOption;validerOption];
   
   fetch connection (baseURL^"login.php");
-    
-  (*On vérifie le code de retour.*)
+  Curl.set_cookiefile connection cookieFilePath;
+      (*On vérifie le code de retour.*)
   if Curl.get_responsecode connection != 302 then
     failwith "Incorrect Login/Password";
 ;;
@@ -172,8 +174,16 @@ let get_TP_list c ue =
 
   let connection = fst c in
   let ueOption = Curl.CURLFORM_CONTENT("id_projet",string_of_int ue,Curl.CONTENTTYPE "text/html") in
+  Curl.set_post connection true;
   Curl.set_httppost connection [ueOption];
   fetch connection (baseURL^"main.php");
   let page = Buffer.contents (snd c) in
-  parse_page page;
-;
+  parse_page page
+
+
+(*Upload file as the tp_id using c (curl connection)*)
+(*Just a skeleton at that time*)
+let upload c tp_id file =
+  let connection = fst c in
+  fetch connection (baseURL^"upload.php?id="^(string_of_int tp_id));
+;;

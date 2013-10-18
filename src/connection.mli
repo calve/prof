@@ -21,3 +21,9 @@ val get_UE_list : (Curl.t * Buffer.t) -> (int * string) list
  * @return liste des (id,intitulés,etat). Un etat est vrai si le TP est ouvert au rendu
  *)
 val get_TP_list : (Curl.t * Buffer.t) -> int -> (int * string * bool) list
+
+(* upload connection tp_id file
+ * Dépose le fichier file sur le tp tp_id en utilisant la connection connection * upload assume que l'utilisateur soit loggé
+ *)
+val upload : (Curl.t * Buffer.t) -> int -> string -> unit
+
