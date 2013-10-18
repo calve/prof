@@ -52,8 +52,8 @@ let _ =
       let ue_id = int_of_string (ask "ue id ? ") in
       let tmp = Connection.get_TP_list c ue_id in
       print_tp_list tmp;
-      let tp_id = int_of_string (ask "tp id ? ") in
-      Connection.upload c tp_id "test.txt";
+      let tp_id = int_of_string (ask "tp id to DELETE ? ") in
+      Connection.delete c tp_id;
     with
     | Curl.CurlException (reason, code, str) ->
       Printf.printf "Error: %s\n" str
