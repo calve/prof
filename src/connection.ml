@@ -1,4 +1,3 @@
-let login = "debusschere";;
 let baseURL = "https://prof.fil.univ-lille1.fr/";;
 let cookieFilePath = "cookie";;
   
@@ -106,23 +105,21 @@ let get_UE_list c =
        * Essayons maintenant d'en faire quelque chose du genre 
        * (63*"Pratique du C, TP")
        *)
-      let groupe_regexp = Str.regexp ".*\\([0-9]+\\)\">\\(.*\\)</OPTION" in
+      let groupe_regexp = Str.regexp ".*\"\\([0-9]+\\)\">\\(.*\\)</OPTION" in
       if Str.string_match groupe_regexp string 0 then
 	(
 	  let id = int_of_string (Str.matched_group 1 string) in
 	  let intitule = Str.matched_group 2 string in
 	  
 	  tmp := (id,intitule)::!tmp; 
+	  (* On prépare le prochain tour, on regarde s'il reste une ligne trouvée par l'expression *)
 	  try
 	    i := Str.search_forward regexp page (!i+1);
 	  with 
 	  | Not_found -> (
 	    i:= String.length page;
-	  );
-	    
+	  );  
 	);
-      
-      (* On prépare le prochain tour, on regarde s'il reste une ligne trouvée par l'expression *)
     done;
     !tmp;
   in
@@ -132,3 +129,48 @@ let get_UE_list c =
   let page = Buffer.contents (snd c) in
   parse_page page
 ;;
+
+let get_TP_list c ue =
+  let parse_page page =
+    let tmp = ref [] in
+    (*
+     * regexp est une expression régulière pour attraper ce genre de lignes :
+     * href="javascript:popup('popup.php?id_echeance=140')">Afficheurs avec IHM</a></td>
+     *)
+    (*let regexp = Str.regexp ".*echeance=\\([0-9]+\\)\')\">\\(.*\\)</a></td>" in *)
+    let regexp = Str.regexp ".*echeance=\\([0-9]+\\)\')\">\\(.*\\)</a></td>\n.*\n.*\n.*center>\\(Ouvert\\|Ferm.*\\)</td>.*" in
+    (* Un simple compteur *)
+    let i = ref 0 in
+    
+    (* On initialise le compteur avec la première occurence trouvée *)
+    i := Str.search_forward regexp page !i;
+    while (Str.string_match regexp page !i) do
+      (*On récupère la chaine trouvée par l'expression régulière*)
+      let id = int_of_string (Str.matched_group 1 page) in
+      let intitule = Str.matched_group 2 page in
+      let etat = match Str.matched_group 3 page
+	with
+	| "Ouvert" -> true 
+	| _ -> false
+      in
+      
+      tmp := (id,intitule,etat)::!tmp; 
+
+      (* On prépare le prochain tour, on regarde s'il reste une ligne trouvée par l'expression *)
+      try
+	i := Str.search_forward regexp page (!i+(String.length (Str.matched_string page)));
+      with 
+      | Not_found -> (
+	i:= String.length page;
+      );
+    done;
+    !tmp;    
+  in
+
+  let connection = fst c in
+  let ueOption = Curl.CURLFORM_CONTENT("id_projet",string_of_int ue,Curl.CONTENTTYPE "text/html") in
+  Curl.set_httppost connection [ueOption];
+  fetch connection (baseURL^"main.php");
+  let page = Buffer.contents (snd c) in
+  parse_page page;
+;

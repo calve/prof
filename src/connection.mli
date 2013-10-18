@@ -7,8 +7,17 @@ val init_connection : unit -> (Curl.t * Buffer.t)
  *)
 val log : (Curl.t * Buffer.t) -> string -> string -> unit
 
-(* getUElist renvoie la liste des (id,intitulés) des unités d'enseignement trouvées
- * getUElist assume que l'utilisateur soit loggé
+(* get_UE_list renvoie la liste des (id,intitulés) des unités d'enseignement trouvées
+ * get_UE_list assume que l'utilisateur soit loggé
  * @return liste des (id,intitulés)
  *)
 val get_UE_list : (Curl.t * Buffer.t) -> (int * string) list
+
+
+(* get_TP_list renvoie la liste des (id,intitulés,etat) des TPs d'une unité d'enseignements
+ * get_TP_list assume que l'utilisateur soit loggé
+ * @param connection
+ * @param id de l'UE visée
+ * @return liste des (id,intitulés,etat). Un etat est vrai si le TP est ouvert au rendu
+ *)
+val get_TP_list : (Curl.t * Buffer.t) -> int -> (int * string * bool) list
