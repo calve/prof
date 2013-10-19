@@ -52,8 +52,14 @@ let _ =
       let ue_id = int_of_string (ask "ue id ? ") in
       let tmp = Connection.get_TP_list c ue_id in
       print_tp_list tmp;
-      let tp_id = int_of_string (ask "tp id to DELETE ? ") in
-      Connection.delete c tp_id;
+      let user_respond = (ask "[u|d] tp id ? \n") in
+      let what_we_want = Str.regexp"\\(u\|d\\)\\([0-9]+\\)" in
+      let tp_id = int_of_string (Str.matched_group 2 user_respond) in
+      let action = Str.matched_group 1 user_respond in
+      match action with
+      | "u" -> Connection.upload c tp_id "debusschere.tar.gz";
+      | "d" -> Connection.delete c tp_id;
+      | _ -> failwith "Didn't get what you mean !"
     with
     | Curl.CurlException (reason, code, str) ->
       Printf.printf "Error: %s\n" str
