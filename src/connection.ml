@@ -1,5 +1,5 @@
 let baseURL = "https://prof.fil.univ-lille1.fr/";;
-let cookieFilePath = "cookie";;
+let cookieFilePath = "";; (*Just to load cookie engine*)
 
 (*
  * Inspired from ocurl.ml, an examples files provided in ocurl
@@ -34,8 +34,6 @@ let init_connection () =
   Curl.set_writefunction connection (writer result);
   Curl.set_verbose connection true;
 
-  (* On spécifie le cookie *)
-  (* Curl.set_cookiefile connection cookieFilePath;*)
   (connection,result)
 ;; 
 
@@ -186,6 +184,16 @@ let get_TP_list c ue =
 let upload c tp_id file =
   let connection = fst c in
   fetch connection (baseURL^"upload.php?id="^(string_of_int tp_id));
+
+  Curl.set_followlocation connection true;
+  Curl.set_post connection true;
+
+  let curl_file_option = Curl.CURLFORM_FILE("fichier1",file,Curl.CONTENTTYPE "application/x-tar") in
+  Curl.set_maxfilesize connection (Int32.of_int 1000000);
+  Curl.set_httppost connection [curl_file_option];
+  fetch connection (baseURL^"upload2.php");
+  
+  (*We should verify that upload was ok ! *)
 ;;
 
 (* Delete the file associated with tp_id on the prof server *)
@@ -194,4 +202,6 @@ let delete c tp_id =
   (*Yep, we actualy need to do it twice*)
   fetch connection (baseURL^"delete.php?&id="^(string_of_int tp_id));
   fetch connection (baseURL^"delete.php?action=delete&id="^(string_of_int tp_id));
+
+  (*We should verify that delete was ok ! *)
 ;;
