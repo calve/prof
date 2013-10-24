@@ -13,27 +13,32 @@
 You need to install ocurl (an ocaml bindings to libcurl) on your system.
 ########################################################################
 
-ArchLinux users may find it on AUR
-Ubuntu users may find an libcurl-ocaml on universe
-Others can get ocurl archive here : http://sourceforge.net/projects/ocurl/
-and then (be sure to be in ocurl.tar.gz directory)
-  > tar xfz ocurl-[YOUR-DOWNLOADED-VERSION].tar.gz
-  > cd curl
+  > git clone http://repo.or.cz/r/ocurl.git
+  > cd ocurl
   > ./configure
   > make
-  > make install
+  > sudo make install
 If it fails, please check that curl is effectively installed on your system, but it is already there in most cases.
-
 
 ############ COMPILATION
 
 To compile prof, just type make
 
+############ EXECUTION
+
+'./prof [archive.tar.gz]' 
+archive.tar.gz is necessary if you want to upload a file
 
 ############ CHANGELOG
-
+ 
+ - upload a file
+ - delete a remote file
+ - retrieve TP list
  - connect to the prof website, get cookie, log and retrieve an UE list
 
 ############ CONTACT
 calvinh34 at gmail
 Bugs, patches and suggestions are welcome !
+
+############ A LAST WORD
+If nothing work, or if you just want an easy sh script, you may find one in legacy/prof.sh that nearly do the same thing.
