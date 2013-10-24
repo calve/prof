@@ -5,6 +5,11 @@
 ## Get the newest version on http://github.com/calve/prof                ##
 ###########################################################################
 
+
+prof is still under devel, it may crash, loose your files, eat your goat.
+Always check your file is actually send on the remote server.
+
+
 ########### REQUIREMENTS :
  * An ocaml compiler
  * ocurl (on ocaml static bind to libcurl)
