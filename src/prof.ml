@@ -42,24 +42,35 @@ let ask s =
 let _ =
   
   begin
+
     try
       let login = ask "login ? " in
       let password = ask_password "password (hidden input) ? " in
+      print_newline ();
       let c = Connection.init_connection () in
       Connection.log c login password;
       let ue_list = Connection.get_UE_list c in
+      print_newline ();
       print_ue_list ue_list;
       let ue_id = int_of_string (ask "ue id ? ") in
       let tmp = Connection.get_TP_list c ue_id in
+      print_newline ();
       print_tp_list tmp;
-      let user_respond = (ask "[u|d] tp id ? \n") in
+      let user_respond = (ask "[u|d] tp id ? (u to upload a file, d to delete a file)\n") in
       let what_we_want = Str.regexp"\\(u\\|d\\)\\([0-9]+\\)" in
       if Str.string_match what_we_want user_respond 0 then
 	(
 	  let tp_id = int_of_string (Str.matched_group 2 user_respond) in
 	  let action = Str.matched_group 1 user_respond in
 	  match action with
-	  | "u" -> Connection.upload c tp_id "debusschere.tar.gz";
+	  | "u" ->     (* check arguments *)
+	    if Array.length Sys.argv != 2 then
+	      (
+		print_string  "usage : prof archive.tar.gz\n No argument found, exciting, nothing done\n";
+		failwith "Missing argument"
+	      )
+	    else
+	      Connection.upload c tp_id Sys.argv.(1);
 	  | "d" -> Connection.delete c tp_id;
 	  | _ -> failwith "Didn't get what you mean !"
 	);

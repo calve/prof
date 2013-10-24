@@ -30,10 +30,8 @@ let init_connection () =
  
   let result = Buffer.create 16384 in
   let connection = Curl.init() in
-  Curl.set_verbose connection true;
+  Curl.set_verbose connection false;
   Curl.set_writefunction connection (writer result);
-  Curl.set_verbose connection true;
-
   (connection,result)
 ;; 
 
