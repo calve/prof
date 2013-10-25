@@ -128,7 +128,10 @@ let get_UE_list c =
   Curl.set_post connection false;
   fetch connection (baseURL^"select_projet.php");
   let page = Buffer.contents (snd c) in
-  parse_page page
+  try
+    parse_page page
+  with 
+  | Not_found -> failwith "get_UE_list failed"
 ;;
 
 let get_TP_list c ue =
@@ -174,7 +177,10 @@ let get_TP_list c ue =
   Curl.set_httppost connection [ueOption];
   fetch connection (baseURL^"main.php");
   let page = Buffer.contents (snd c) in
+  try
   parse_page page
+  with 
+  | Not_found -> failwith "get_TP_list"
 
 
 (*Upload file as the tp_id using c (curl connection)*)
@@ -209,10 +215,22 @@ let upload c tp_id file =
 
 (* Delete the file associated with tp_id on the prof server *)
 let delete c tp_id =
+  let parse_page page =
+    let regexp = Str.regexp ".*Fichier effac.*" in
+    (* Un simple compteur *)
+    let i = ref 0 in
+    
+    (* On initialise le compteur avec la première occurence trouvée *)
+    try 
+      i := Str.search_forward regexp page !i;
+    with
+    | Not_found -> failwith "delete failed"    
+  in
+
   let connection = fst c in
   (*Yep, we actualy need to do it twice*)
   fetch connection (baseURL^"delete.php?&id="^(string_of_int tp_id));
   fetch connection (baseURL^"delete.php?action=delete&id="^(string_of_int tp_id));
-
+  parse_page (Buffer.contents (snd c)); 
   (*We should verify that delete was ok ! *)
 ;;

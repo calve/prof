@@ -37,7 +37,8 @@ To compile prof, just type make
 archive.tar.gz is necessary if you want to upload a file
 
 ############ CHANGELOG
- 
+
+ - raise exception when procedures fail 
  - upload a file
  - delete a remote file
  - retrieve TP list
