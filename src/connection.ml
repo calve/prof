@@ -180,6 +180,18 @@ let get_TP_list c ue =
 (*Upload file as the tp_id using c (curl connection)*)
 (*Just a skeleton at that time*)
 let upload c tp_id file =
+  let parse_page page =
+    let regexp = Str.regexp ".*Le fichier .* est bien enregistr*" in
+    (* Un simple compteur *)
+    let i = ref 0 in
+    
+    (* On initialise le compteur avec la première occurence trouvée *)
+    try 
+      i := Str.search_forward regexp page !i;
+    with
+    | Not_found -> failwith "upload failed"    
+  in
+
   let connection = fst c in
   fetch connection (baseURL^"upload.php?id="^(string_of_int tp_id));
 
@@ -191,7 +203,8 @@ let upload c tp_id file =
   Curl.set_httppost connection [curl_file_option];
   fetch connection (baseURL^"upload2.php");
   
-  (*We should verify that upload was ok ! *)
+  (*On vérifie que le page renvoyé nous confirme la réussite de l'upload*)
+  parse_page (Buffer.contents (snd c));
 ;;
 
 (* Delete the file associated with tp_id on the prof server *)
