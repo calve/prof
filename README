@@ -12,7 +12,9 @@ Always check your file is actually send on the remote server.
 
 ########### REQUIREMENTS :
  * An ocaml compiler
- * ocurl (on ocaml static bind to libcurl)
+ * ocaml-findlib : http://projects.camlcity.org/projects/findlib.html
+ * ocurl (on ocaml static bind to libcurl) : http://repo.or.cz/w/ocurl.git
+ * libcurl
 
 ########################################################################
 You need to install ocurl (an ocaml bindings to libcurl) on your system.
@@ -23,7 +25,7 @@ You need to install ocurl (an ocaml bindings to libcurl) on your system.
   > ./configure
   > make
   > sudo make install
-If it fails, please check that curl is effectively installed on your system, but it is already there in most cases.
+If it fails, please check that libcurl is effectively installed on your system, but it is already there in most cases.
 
 ############ COMPILATION
 
