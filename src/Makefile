@@ -2,7 +2,7 @@ OCAMLC = ocamlc
 CFLAGS = -I +curl curl.cma str.cma
 
 #.cmo files needed to build the executable
-OBJS=connection.cmo
+OBJS=libprof.cmo
 OUT=prof
 
 .PHONY : all clean

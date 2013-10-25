@@ -47,13 +47,13 @@ let _ =
       let login = ask "login ? " in
       let password = ask_password "password (hidden input) ? " in
       print_newline ();
-      let c = Connection.init_connection () in
-      Connection.log c login password;
-      let ue_list = Connection.get_UE_list c in
+      let c = Libprof.init_connection () in
+      Libprof.log c login password;
+      let ue_list = Libprof.get_UE_list c in
       print_newline ();
       print_ue_list ue_list;
       let ue_id = int_of_string (ask "ue id ? ") in
-      let tmp = Connection.get_TP_list c ue_id in
+      let tmp = Libprof.get_TP_list c ue_id in
       print_newline ();
       print_tp_list tmp;
       let user_respond = (ask "[u|d] tp id ? (u to upload a file, d to delete a file)\n") in
@@ -70,8 +70,8 @@ let _ =
 		failwith "Missing argument"
 	      )
 	    else
-	      Connection.upload c tp_id Sys.argv.(1);
-	  | "d" -> Connection.delete c tp_id;
+	      Libprof.upload c tp_id Sys.argv.(1);
+	  | "d" -> Libprof.delete c tp_id;
 	  | _ -> failwith "Didn't get what you mean !"
 	);
     with
