@@ -1,11 +1,10 @@
-OCAMLC = ocamlc
-CFLAGS = -I +curl curl.cma str.cma
 OUT=prof
 SRCDIR=src
 
 .PHONY : all clean
 all: $(OUT)
 
+#We'll compile in $(SRCDIR), and then we retrive then binary
 $(OUT):
 	make -C $(SRCDIR) $(OUT)
 	mv $(SRCDIR)/$(OUT) .
