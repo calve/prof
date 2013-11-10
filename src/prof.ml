@@ -1,16 +1,20 @@
 let rec print_ue_list list =
   match list with
   | [] -> ()
-  | h::_ -> ( 
-    Printf.printf "%d : %s\n" (fst h )(snd h);
+  | ue::_ -> (
+    Printf.printf "%d : %s\n" (Libprof.get_UE_id ue)(Libprof.get_UE_title ue);
     print_ue_list (List.tl list);
   )
-
+    
 let rec print_tp_list list =
   match list with
   | [] -> ()
-  | (id,intitule,etat)::_ -> ( 
-    Printf.printf "%d : %s (%s) \n" (id)(intitule)(match etat with | true -> "Ouvert" | _ -> "Ferme");
+  | tp::_ -> ( 
+    Printf.printf "%d : %s (%s) \n" 
+      (Libprof.get_TP_id tp)
+      (Libprof.get_TP_title tp)
+      (match (Libprof.get_TP_status tp) with 
+      | true -> "Ouvert" | _ -> "Ferme");
     print_tp_list (List.tl list);
   )
 

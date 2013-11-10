@@ -5,6 +5,10 @@ let cookieFilePath = "";; (*Just to load cookie engine*)
  * Inspired from ocurl.ml, an examples files provided in ocurl
  *)
 
+type t = (Curl.t * Buffer.t)
+type ue = UE of int*string
+type tp = TP of int*string*bool
+
 (*
  * Write some datas * Buffer.t -> string -> int
  *)
@@ -24,6 +28,26 @@ let showInfo connection =
     (Curl.get_totaltime connection)
     (Curl.get_effectiveurl connection)
     (Curl.get_responsecode connection)
+
+let get_UE_id ue =
+  match ue with
+    UE (id,title) -> id
+
+let get_UE_title ue =
+  match ue with
+    UE (id,title) -> title
+
+let get_TP_id tp =
+  match tp with
+    TP (id,title,status) -> id
+
+let get_TP_title tp =
+  match tp with
+    TP (id,title,status) -> title
+
+let get_TP_status tp =
+  match tp with
+    TP (id,title,status) -> status
     
 let init_connection () =
   Curl.global_init Curl.CURLINIT_GLOBALALL;
@@ -111,7 +135,7 @@ let get_UE_list c =
 	  let id = int_of_string (Str.matched_group 1 string) in
 	  let intitule = Str.matched_group 2 string in
 	  
-	  tmp := (id,intitule)::!tmp; 
+	  tmp := (UE (id,intitule))::!tmp; 
 	  (* On prépare le prochain tour, on regarde s'il reste une ligne trouvée par l'expression *)
 	  try
 	    i := Str.search_forward regexp page (!i+1);
@@ -158,7 +182,7 @@ let get_TP_list c ue =
 	| _ -> false
       in
       
-      tmp := (id,intitule,etat)::!tmp; 
+      tmp := (TP (id,intitule,etat))::!tmp; 
 
       (* On prépare le prochain tour, on regarde s'il reste une ligne trouvée par l'expression *)
       try
