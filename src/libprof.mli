@@ -14,7 +14,6 @@ val log : (Curl.t * Buffer.t) -> string -> string -> unit
  *)
 val get_UE_list : (Curl.t * Buffer.t) -> (int * string) list
 
-
 (* get_TP_list renvoie la liste des (id,intitulés,etat) des TPs d'une unité d'enseignements
  * get_TP_list assume que l'utilisateur soit loggé
  * @param connection
