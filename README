@@ -38,6 +38,7 @@ archive.tar.gz is necessary if you want to upload a file
 
 ############ CHANGELOG
 
+ - TPs and UEs numbers are now from 0 to n, and not the actual id on the server	    
  - raise exception when procedures fail 
  - upload a file
  - delete a remote file

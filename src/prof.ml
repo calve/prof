@@ -1,22 +1,28 @@
-let rec print_ue_list list =
-  match list with
-  | [] -> ()
-  | ue::_ -> (
-    Printf.printf "%d : %s\n" (Libprof.get_UE_id ue)(Libprof.get_UE_title ue);
-    print_ue_list (List.tl list);
+let print_ue_list list =
+  let rec print list n = 
+    match list with
+    | [] -> ()
+    | ue::_ -> (
+      Printf.printf "%d : %s\n" n (Libprof.get_UE_title ue);
+    print (List.tl list) (n+1);
   )
+  in
+print list 0
     
 let rec print_tp_list list =
+  let rec print list n = 
   match list with
   | [] -> ()
   | tp::_ -> ( 
     Printf.printf "%d : %s (%s) \n" 
-      (Libprof.get_TP_id tp)
+      n
       (Libprof.get_TP_title tp)
       (match (Libprof.get_TP_status tp) with 
       | true -> "Ouvert" | _ -> "Ferme");
-    print_tp_list (List.tl list);
+    print (List.tl list) (n+1);
   )
+  in
+  print list 0
 
 let ask_password s =
   print_string s;
@@ -56,10 +62,11 @@ let _ =
       let ue_list = Libprof.get_UE_list c in
       print_newline ();
       print_ue_list ue_list;
-      let ue_id = int_of_string (ask "ue id ? ") in
-      let tmp = Libprof.get_TP_list c ue_id in
+      let ue_id = int_of_string (ask "ue # ? ") in
+      let ue = (List.nth ue_list ue_id) in
+      let tp_list = Libprof.get_TP_list c ue in
       print_newline ();
-      print_tp_list tmp;
+      print_tp_list tp_list;
       let user_respond = (ask "[u|d] tp id ? (u to upload a file, d to delete a file)\n") in
       let what_we_want = Str.regexp"\\(u\\|d\\)\\([0-9]+\\)" in
       if Str.string_match what_we_want user_respond 0 then
@@ -74,7 +81,8 @@ let _ =
 		failwith "Missing argument"
 	      )
 	    else
-	      Libprof.upload c tp_id Sys.argv.(1);
+	      let tp = (List.nth tp_list tp_id) in
+	      Libprof.upload c tp Sys.argv.(1);
 	  | "d" -> Libprof.delete c tp_id;
 	  | _ -> failwith "Didn't get what you mean !"
 	);

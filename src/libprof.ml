@@ -196,7 +196,11 @@ let get_TP_list c ue =
   in
 
   let connection = fst c in
-  let ueOption = Curl.CURLFORM_CONTENT("id_projet",string_of_int ue,Curl.CONTENTTYPE "text/html") in
+  let ueOption = Curl.CURLFORM_CONTENT(
+    "id_projet",
+    string_of_int (get_UE_id ue),
+    Curl.CONTENTTYPE "text/html"
+  ) in
   Curl.set_post connection true;
   Curl.set_httppost connection [ueOption];
   fetch connection (baseURL^"main.php");
@@ -209,7 +213,7 @@ let get_TP_list c ue =
 
 (*Upload file as the tp_id using c (curl connection)*)
 (*Just a skeleton at that time*)
-let upload c tp_id file =
+let upload c tp file =
   let parse_page page =
     let regexp = Str.regexp ".*Le fichier .* est bien enregistr*" in
     (* Un simple compteur *)
@@ -223,7 +227,7 @@ let upload c tp_id file =
   in
 
   let connection = fst c in
-  fetch connection (baseURL^"upload.php?id="^(string_of_int tp_id));
+  fetch connection (baseURL^"upload.php?id="^(string_of_int (get_TP_id tp)));
 
   Curl.set_followlocation connection true;
   Curl.set_post connection true;

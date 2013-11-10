@@ -7,13 +7,13 @@ type tp
 val init_connection : unit -> t
 
 (* log loggin password demarre une session avec l'utilisateur loggin et le mot de passe password 
- * @return "Incorrect Login/Password" si le code de réponse de la page de loginn est différent de 302, et donc que la connection n'as pas réussi
+ * @failwith "Incorrect Login/Password" si le code de réponse de la page de loginn est différent de 302, et donc que la connection n'as pas réussi
  *)
 val log : t -> string -> string -> unit
 
 (* get_UE_list renvoie la liste des (id,intitulés) des unités d'enseignement trouvées
  * get_UE_list assume que l'utilisateur soit loggé
- * failwith "get_UE_list failed" ssi la page renvoyée ne contient pas une liste d'UE, c'est a dire pas de "VALUE.*OPTION"
+ * @failwith "get_UE_list failed" ssi la page renvoyée ne contient pas une liste d'UE, c'est a dire pas de "VALUE.*OPTION"
  * @return liste des (id,intitulés)
  *)
 val get_UE_list : t -> ue list
@@ -22,16 +22,17 @@ val get_UE_list : t -> ue list
  * get_TP_list assume que l'utilisateur soit loggé
  * @param connection
  * @param id de l'UE visée
- * failwith "get_TP_list failed" ssi la page renvoyée ne contient pas une liste de TP, c'est a dire pas de "echeance.*"
+ * @failwith "get_TP_list failed" ssi la page renvoyée ne contient pas une liste de TP, c'est a dire pas de "echeance.*"
  * @return liste des (id,intitulés,etat). Un etat est vrai si le TP est ouvert au rendu
  *)
-val get_TP_list : t -> int -> tp list
+val get_TP_list : t -> ue -> tp list
 
 (* upload connection tp_id file
- * Dépose le fichier file sur le tp tp_id en utilisant la connection connection * upload assume que l'utilisateur soit loggé
+ * Dépose le fichier file sur le tp tp_id en utilisant la connection connection 
+ * upload assume que l'utilisateur soit loggé
  * failwith "upload error" ssi la page renvoyée ne contient pas "La fichier .* a bien été envoyé"
  *)
-val upload : t -> int -> string -> unit
+val upload : t -> tp -> string -> unit
 
 (* delete connection tp_id
  * Supprime le fichier associé au tp tp_id sur le serveur de prof
