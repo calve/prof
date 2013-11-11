@@ -1,3 +1,15 @@
+(*
+ * prof.ml
+ * A simple cli to libprof
+ * User will be prompted for login and password,
+ * then for an UE and a TP, and finally, if she/he want
+ * to upload the work she/he did, or delete a previsouly
+ * send files.
+ * 
+ * Path to file to upload should be given as the one and only argument to prof 
+ *
+ *)
+
 let print_ue_list list =
   let rec print list n = 
     match list with
@@ -7,7 +19,8 @@ let print_ue_list list =
     print (List.tl list) (n+1);
   )
   in
-print list 0
+  (* Use previously defined function starting with n=0*)
+  print list 0
     
 let rec print_tp_list list =
   let rec print list n = 
@@ -22,70 +35,100 @@ let rec print_tp_list list =
     print (List.tl list) (n+1);
   )
   in
+  (* Use previously defined function starting with n=0*)
   print list 0
 
 let ask_password s =
   print_string s;
   flush stdout;
 
-  (* On demande au shell de ne pas répéter les charactères entrés par l'utilisateur *)
+  (* We tell the shell to not ouput what the user types *)
   let exit_code = Sys.command "stty -echo" in
   if (exit_code <> 0) then
     failwith "Ask_password error with stty";
 
-  let tmp = input_line stdin in
+  let password = input_line stdin in
   print_newline ();
-  (* On réactive l'echo *)
+  (* We turn echo back on *)
   let exit_code = Sys.command "stty echo" in
   if (exit_code <> 0) then
     failwith "Ask_password error with stty"
   else
-    tmp
-
+    password
 
 
 let ask s = 
   print_string s;
   flush stdout;
   input_line stdin
+
+let upload connection tp =
+  (* check arguments *)
+  if Array.length Sys.argv != 2 then
+    (
+      print_string  "usage : prof archive.tar.gz\n"^"No argument found, exciting, nothing done\n";
+      failwith "Missing argument"
+    )
+  else
+    Libprof.upload connection tp Sys.argv.(1)
     
 let _ =
   
   begin
 
     try
+      (*
+       *Retriving login and password from user input, then connect to prof
+       *)
       let login = ask "login ? " in
       let password = ask_password "password (hidden input) ? " in
       print_newline ();
       let c = Libprof.init_connection () in
       Libprof.log c login password;
+
+      (*
+       * Retriving the UE list, and print it to the user
+       *)
       let ue_list = Libprof.get_UE_list c in
       print_newline ();
       print_ue_list ue_list;
-      let ue_id = int_of_string (ask "ue # ? ") in
+      
+      (*
+       * Ask the user the TP from which UE he want to fetch
+       * send retrieve it, and print it back to the user
+       *)
+      let ue_id = int_of_string (ask "ue # ? \n> ") in
       let ue = (List.nth ue_list ue_id) in
       let tp_list = Libprof.get_TP_list c ue in
       print_newline ();
       print_tp_list tp_list;
-      let user_respond = (ask "[u|d] tp id ? (u to upload a file, d to delete a file)\n") in
+
+      (*
+       * We should now ask what does my user want to do
+       * We suggest to type a lettre from 'u' or 'd', 
+       * respectively to upload or delete on a TP
+       * Then we add a digit corresponding to the TP where
+       * we want the action to be done
+       * If the user just hit RETURN, we will upload to TP 0
+       *)
+      let user_respond = (ask "[u|d] tp id ? (u to upload a file, d to delete a file,) \n[u0] ") in
       let what_we_want = Str.regexp"\\(u\\|d\\)\\([0-9]+\\)" in
-      if Str.string_match what_we_want user_respond 0 then
-	(
+
+      if (String.length user_respond = 0) then
+	(* Nothing read from input, let's upload to 0 *)
+	upload c (List.nth tp_list 0)
+      else if Str.string_match what_we_want user_respond 0 then
+	( 
+	  (* We will try to read from user input *)
 	  let tp_id = int_of_string (Str.matched_group 2 user_respond) in
 	  let action = Str.matched_group 1 user_respond in
+	  
 	  match action with
-	  | "u" ->     (* check arguments *)
-	    if Array.length Sys.argv != 2 then
-	      (
-		print_string  "usage : prof archive.tar.gz\n No argument found, exciting, nothing done\n";
-		failwith "Missing argument"
-	      )
-	    else
-	      let tp = (List.nth tp_list tp_id) in
-	      Libprof.upload c tp Sys.argv.(1);
+	  | "u" -> upload c (List.nth tp_list tp_id)
 	  | "d" -> Libprof.delete c tp_id;
 	  | _ -> failwith "Didn't get what you mean !"
-	);
+	)
+	  
     with
     | Curl.CurlException (reason, code, str) ->
       Printf.printf "Error: %s\n" str
