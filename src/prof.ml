@@ -66,7 +66,7 @@ let upload connection tp =
   (* check arguments *)
   if Array.length Sys.argv != 2 then
     (
-      print_string  "usage : prof archive.tar.gz\n"^"No argument found, exciting, nothing done\n";
+      print_string  "usage : prof archive.tar.gz\n No argument found, exciting, nothing done\n";
       failwith "Missing argument"
     )
   else
