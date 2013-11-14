@@ -5,11 +5,16 @@ OCAMLOPT = ocamlopt
 OFLAGS = -I +curl curl.cmxa str.cmxa
 
 #.cmo files needed to build the executable
-OBJS=libprof.cmo
+OBJS=date.cmo libprof.cmo
 COMPILED=libprof.cmx
 OUT=prof
 
+#Settings dependancies
+libprof.cmi:	date.cmo
+libprof.cmo:	date.cmo
+
 .PHONY : all clean
+.SUFFIXES: .ml .mli .cmo .cmi
 all: $(OUT)
 
 $(OUT) : $(OBJS)
