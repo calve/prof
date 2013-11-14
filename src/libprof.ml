@@ -165,8 +165,14 @@ let get_TP_list c ue =
      * regexp est une expression régulière pour attraper ce genre de lignes :
      * href="javascript:popup('popup.php?id_echeance=140')">Afficheurs avec IHM</a></td>
      *)
-    (*let regexp = Str.regexp ".*echeance=\\([0-9]+\\)\')\">\\(.*\\)</a></td>" in *)
-    let regexp = Str.regexp ".*echeance=\\([0-9]+\\)\')\">\\(.*\\)</a></td>\n.*\n.*\n.*center>\\(Ouvert\\|Ferm.*\\)</td>.*" in
+
+    (* Each line, in order *)
+    let lines = [".*echeance=\\([0-9]+\\)\')\">\\(.*\\)</a></td>\n";
+		 ".*\n";
+		 ".*\n";
+		 ".*center>\\(Ouvert\\|Ferm.*\\)</td>.*";]
+    in
+    let regexp = Str.regexp (String.concat "" lines) in
     (* Un simple compteur *)
     let i = ref 0 in
     
