@@ -27,11 +27,12 @@ let rec print_tp_list list =
   match list with
   | [] -> ()
   | tp::_ -> ( 
-    Printf.printf "%d : %s (%s) \n" 
+    Printf.printf "%d : %s (%s) [%s] \n" 
       n
       (Libprof.get_TP_title tp)
       (match (Libprof.get_TP_status tp) with 
-      | true -> "Ouvert" | _ -> "Ferme");
+      | true -> "Ouvert" | _ -> "Ferme")
+      (Date.string (Libprof.get_TP_date tp));
     print (List.tl list) (n+1);
   )
   in

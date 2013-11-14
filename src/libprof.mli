@@ -69,3 +69,9 @@ val get_TP_title : tp -> string
  * @return bool : vrai ssi le tp est ouvert
  *)
 val get_TP_status : tp -> bool
+
+(*
+ * @param tp : le tp a evaluer
+ * @return date : la date de cloture du tp
+ *)
+val get_TP_date : tp -> Date.t

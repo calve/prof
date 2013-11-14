@@ -7,7 +7,7 @@ let cookieFilePath = "";; (*Just to load cookie engine*)
 
 type t = (Curl.t * Buffer.t)
 type ue = UE of int*string
-type tp = TP of int*string*bool
+type tp = TP of int*string*bool*Date.t
 
 (*
  * Write some datas * Buffer.t -> string -> int
@@ -39,15 +39,19 @@ let get_UE_title ue =
 
 let get_TP_id tp =
   match tp with
-    TP (id,title,status) -> id
+    TP (id,title,status,date) -> id
 
 let get_TP_title tp =
   match tp with
-    TP (id,title,status) -> title
+    TP (id,title,status,date) -> title
 
 let get_TP_status tp =
   match tp with
-    TP (id,title,status) -> status
+    TP (id,title,status,date) -> status
+
+let get_TP_date tp =
+  match tp with
+    TP (id,title,status,date) -> date
     
 let init_connection () =
   Curl.global_init Curl.CURLINIT_GLOBALALL;
@@ -166,10 +170,14 @@ let get_TP_list c ue =
      * href="javascript:popup('popup.php?id_echeance=140')">Afficheurs avec IHM</a></td>
      *)
 
+    (*tdg stand for Two Digit Group*)
+    let tdg = "\\([0-9][0-9]\\)" in
+    let date_line = ".*"^tdg^"/"^tdg^"/"^tdg^"-"^tdg^":"^tdg^".*\n" in
+
     (* Each line, in order *)
     let lines = [".*echeance=\\([0-9]+\\)\')\">\\(.*\\)</a></td>\n";
 		 ".*\n";
-		 ".*\n";
+		 date_line; (*Closing date*)
 		 ".*center>\\(Ouvert\\|Ferm.*\\)</td>.*";]
     in
     let regexp = Str.regexp (String.concat "" lines) in
@@ -182,13 +190,24 @@ let get_TP_list c ue =
       (*On récupère la chaine trouvée par l'expression régulière*)
       let id = int_of_string (Str.matched_group 1 page) in
       let intitule = Str.matched_group 2 page in
+      let date = (
+	let day = int_of_string (Str.matched_group 3 page) in
+	let month = int_of_string (Str.matched_group 4 page) in
+	let year = int_of_string (Str.matched_group 5 page) in
+	let hour = int_of_string (Str.matched_group 6 page) in
+	let minute = int_of_string (Str.matched_group 7 page) in
+	Date.date year month day hour minute
+      ) 
+      in
+      print_string (Date.string date);
       let etat = match Str.matched_group 3 page
 	with
 	| "Ouvert" -> true 
 	| _ -> false
       in
+
       
-      tmp := (TP (id,intitule,etat))::!tmp; 
+      tmp := (TP (id,intitule,etat,date))::!tmp; 
 
       (* On prépare le prochain tour, on regarde s'il reste une ligne trouvée par l'expression *)
       try
@@ -268,3 +287,5 @@ let delete c tp_id =
   parse_page (Buffer.contents (snd c)); 
   (*We should verify that delete was ok ! *)
 ;;
+
+
