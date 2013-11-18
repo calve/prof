@@ -199,7 +199,6 @@ let get_TP_list c ue =
 	Date.date year month day hour minute
       ) 
       in
-      print_string (Date.string date);
       let etat = match Str.matched_group 3 page
 	with
 	| "Ouvert" -> true 
