@@ -33,11 +33,12 @@ To compile prof, just type make
 
 ############ EXECUTION
 
-'./prof [archive.tar.gz]' 
+'./prof [archive.tar.gz|--sorted]' 
 archive.tar.gz is necessary if you want to upload a file
 
 ############ CHANGELOG
 
+ - Added argument --sorted to list all TPs sorted by time. Still experimental
  - QuickFix : Clear buffer containing downloaded pages before getting TP list 
  - TPs contains their UE
  - TPs contains their deadline. Maybe in a future we could sort TP by deadline
