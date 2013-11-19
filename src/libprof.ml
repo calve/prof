@@ -7,7 +7,7 @@ let cookieFilePath = "";; (*Just to load cookie engine*)
 
 type t = (Curl.t * Buffer.t)
 type ue = UE of int*string
-type tp = TP of int*string*bool*Date.t
+type tp = TP of ue*int*string*bool*Date.t
 
 (*
  * Write some datas * Buffer.t -> string -> int
@@ -37,21 +37,25 @@ let get_UE_title ue =
   match ue with
     UE (id,title) -> title
 
+let get_TP_ue tp =
+  match tp with
+    TP (ue,id,title,status,date) -> ue
+
 let get_TP_id tp =
   match tp with
-    TP (id,title,status,date) -> id
+    TP (ue,id,title,status,date) -> id
 
 let get_TP_title tp =
   match tp with
-    TP (id,title,status,date) -> title
+    TP (ue,id,title,status,date) -> title
 
 let get_TP_status tp =
   match tp with
-    TP (id,title,status,date) -> status
+    TP (ue,id,title,status,date) -> status
 
 let get_TP_date tp =
   match tp with
-    TP (id,title,status,date) -> date
+    TP (ue,id,title,status,date) -> date
     
 let init_connection () =
   Curl.global_init Curl.CURLINIT_GLOBALALL;
@@ -206,7 +210,7 @@ let get_TP_list c ue =
       in
 
       
-      tmp := (TP (id,intitule,etat,date))::!tmp; 
+      tmp := (TP (ue,id,intitule,etat,date))::!tmp; 
 
       (* On prépare le prochain tour, on regarde s'il reste une ligne trouvée par l'expression *)
       try

@@ -52,6 +52,14 @@ val get_UE_id : ue -> int
  *)
 val get_UE_title : ue -> string
 
+
+(*
+ * @param tp : le tp a evaluer
+ * @return ue : l'ue du tp
+ *)
+val get_TP_ue : tp -> ue
+
+
 (*
  * @param tp : le tp a evaluer
  * @return int : l'id du tp
