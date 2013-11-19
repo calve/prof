@@ -70,8 +70,8 @@ let init_connection () =
 
 (* Get a page
  * Get ressources specified at url using connection, putting output in result
+ * It will clear the buffer con
  *)
-
 let fetch connection url =
   Printf.printf "Retriving %s ...\n" (url);
   flush stdout;
@@ -231,6 +231,7 @@ let get_TP_list c ue =
   ) in
   Curl.set_post connection true;
   Curl.set_httppost connection [ueOption];
+  Buffer.clear (snd c);
   fetch connection (baseURL^"main.php");
   let page = Buffer.contents (snd c) in
   try
