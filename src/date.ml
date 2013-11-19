@@ -25,7 +25,7 @@ let string t =
 let timestamp t  = 
   match t with
     DATE (year,month,day,hour,minute) -> 
-      ((((((year*12)+(month))*31)+day)*24)+hour*60)+minute
+      (((((((year*12)+month)*31)+day)*24)+hour)*60)+minute
   
 
 let compare date1 date2 =

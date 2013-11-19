@@ -38,6 +38,7 @@ archive.tar.gz is necessary if you want to upload a file
 
 ############ CHANGELOG
 
+ - Fix : Date comparaison
  - Added argument --sorted to list all TPs sorted by time. Still experimental
  - QuickFix : Clear buffer containing downloaded pages before getting TP list 
  - TPs contains their UE
