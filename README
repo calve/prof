@@ -27,13 +27,31 @@ You need to install ocurl (an ocaml bindings to libcurl) on your system.
   > sudo make install
 If it fails, please check that libcurl is effectively installed on your system, but it is already there in most cases.
 
-############ COMPILATION
+############ DOWNLOAD & COMPILE
 
-To compile prof, just type make
+To download latests source and compile
 
-############ EXECUTION
+  > git clone https://github.com/calve/prof.git
+  > cd prof
+  > make
+  > ./prof
 
-'./prof [archive.tar.gz|--sorted]' 
+############ UPDATE
+
+To get the last version
+
+  > cd prof
+  > git pull
+  > make
+
+############ USAGE
+
+'prof'  will let you list and delete your TPs after choosing an UE.
+'prof --sorted' will list every TPs found, and print them sorted by deadline
+'prof archive.tar.gz' will upload archive to the place you will specifie
+
+  > ./prof [archive.tar.gz|--sorted]
+
 archive.tar.gz is necessary if you want to upload a file
 
 ############ CHANGELOG
