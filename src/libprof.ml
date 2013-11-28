@@ -182,7 +182,7 @@ let get_TP_list c ue =
     let lines = [".*echeance=\\([0-9]+\\)\')\">\\(.*\\)</a></td>\n";
 		 ".*\n";
 		 date_line; (*Closing date*)
-		 ".*center>\\(Ouvert\\|Ferm.*\\)</td>.*";]
+		 ".*center>\\(Ouvert\\|Ferm.\\)</td>.*";]
     in
     let regexp = Str.regexp (String.concat "" lines) in
     (* Un simple compteur *)
@@ -203,13 +203,12 @@ let get_TP_list c ue =
 	Date.date year month day hour minute
       ) 
       in
-      let etat = match Str.matched_group 3 page
+      let etat = match Str.matched_group 8 page
 	with
 	| "Ouvert" -> true 
 	| _ -> false
       in
-
-      
+            
       tmp := (TP (ue,id,intitule,etat,date))::!tmp; 
 
       (* On prépare le prochain tour, on regarde s'il reste une ligne trouvée par l'expression *)
