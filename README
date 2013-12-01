@@ -68,6 +68,10 @@ archive.tar.gz is necessary if you want to upload a file
  - retrieve TP list
  - connect to the prof website, get cookie, log and retrieve an UE list
 
+############ TODO
+
+  - Improve ui and cli
+
 ############ CONTACT
 calvinh34 at gmail
 Bugs, patches and suggestions are welcome !
