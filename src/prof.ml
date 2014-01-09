@@ -8,6 +8,10 @@
  * 
  * Path to file to upload should be given as the one and only argument to prof 
  *
+ * Copyright © 2013 AdB <calvinh34@gmail.com>
+ * This work is free. You can redistribute it and/or modify it under the
+ * terms of the Do What The Fuck You Want To Public License, Version 2,
+ * as published by Sam Hocevar. See the COPYING file for more details.
  *)
 
 let print_ue_list list =

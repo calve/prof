@@ -1,3 +1,10 @@
+(*
+ * Copyright © 2013 AdB <calvinh34@gmail.com>
+ * This work is free. You can redistribute it and/or modify it under the
+ * terms of the Do What The Fuck You Want To Public License, Version 2,                                                                                                     
+ * as published by Sam Hocevar. See the COPYING file for more details.
+ *)
+
 let baseURL = "https://prof.fil.univ-lille1.fr/";;
 let cookieFilePath = "";; (*Just to load cookie engine*)
 
