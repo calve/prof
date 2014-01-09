@@ -20,11 +20,11 @@ Always check your file is actually send on the remote server.
 
 You need to install ocurl (an ocaml bindings to libcurl) on your system.
 
-  > git clone http://repo.or.cz/r/ocurl.git
-  > cd ocurl
-  > ./configure
-  > make
-  > sudo make install
+    git clone http://repo.or.cz/r/ocurl.git
+    cd ocurl
+    ./configure
+    make
+    sudo make install
 
 If it fails, please check that libcurl is effectively installed on your system, but it is already there in most cases.
 
@@ -32,18 +32,18 @@ If it fails, please check that libcurl is effectively installed on your system, 
 
 To download latests source and compile
 
-  > git clone https://github.com/calve/prof.git
-  > cd prof
-  > make
-  > ./prof
+    git clone https://github.com/calve/prof.git
+    cd prof
+    make
+    ./prof
 
 ## UPDATE
 
 To get the last version
 
-  > cd prof
-  > git pull
-  > make
+    cd prof
+    git pull
+    make
 
 ## USAGE
 
@@ -51,7 +51,7 @@ To get the last version
    * 'prof --sorted' will list every TPs found, and print them sorted by deadline
    * 'prof archive.tar.gz' will upload archive to the place you will specifie
 
-  > ./prof [archive.tar.gz|--sorted]
+    ./prof [archive.tar.gz|--sorted]
 
 archive.tar.gz is necessary if you want to upload a file
 
@@ -74,7 +74,9 @@ archive.tar.gz is necessary if you want to upload a file
   - Improve ui and cli
 
 ## CONTACT
-calvinh34 at gmail
+
+    calvinh34 at gmail
+
 Bugs, patches and suggestions are welcome !
 
 ## A LAST WORD
