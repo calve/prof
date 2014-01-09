@@ -1,33 +1,34 @@
-###########################################################################
-## prof                                                                  ##
-## A -not that much- useful program to upload your work on PROF          ##
-##                                                                       ##
-## Get the newest version on http://github.com/calve/prof                ##
-###########################################################################
+prof
+====
 
+### An useful program to upload your work on PROF
+
+PROF is where students from computer science of LILLE1 should upload their work. 
+
+Get the newest version on http://github.com/calve/prof
 
 prof is still under devel, it may crash, loose your files, eat your goat.
 Always check your file is actually send on the remote server.
 
 
-########### REQUIREMENTS :
+## REQUIREMENTS :
  * An ocaml compiler
  * ocaml-findlib : http://projects.camlcity.org/projects/findlib.html
  * ocurl (on ocaml static bind to libcurl) : http://repo.or.cz/w/ocurl.git
  * libcurl
 
-########################################################################
+
 You need to install ocurl (an ocaml bindings to libcurl) on your system.
-########################################################################
 
   > git clone http://repo.or.cz/r/ocurl.git
   > cd ocurl
   > ./configure
   > make
   > sudo make install
+
 If it fails, please check that libcurl is effectively installed on your system, but it is already there in most cases.
 
-############ DOWNLOAD & COMPILE
+## DOWNLOAD & COMPILE
 
 To download latests source and compile
 
@@ -36,7 +37,7 @@ To download latests source and compile
   > make
   > ./prof
 
-############ UPDATE
+## UPDATE
 
 To get the last version
 
@@ -44,17 +45,17 @@ To get the last version
   > git pull
   > make
 
-############ USAGE
+## USAGE
 
-'prof'  will let you list and delete your TPs after choosing an UE.
-'prof --sorted' will list every TPs found, and print them sorted by deadline
-'prof archive.tar.gz' will upload archive to the place you will specifie
+   * 'prof'  will let you list and delete your TPs after choosing an UE.
+   * 'prof --sorted' will list every TPs found, and print them sorted by deadline
+   * 'prof archive.tar.gz' will upload archive to the place you will specifie
 
   > ./prof [archive.tar.gz|--sorted]
 
 archive.tar.gz is necessary if you want to upload a file
 
-############ CHANGELOG
+## CHANGELOG
 
  - Fix : Date comparaison
  - Added argument --sorted to list all TPs sorted by time. Still experimental
@@ -68,13 +69,13 @@ archive.tar.gz is necessary if you want to upload a file
  - retrieve TP list
  - connect to the prof website, get cookie, log and retrieve an UE list
 
-############ TODO
+## TODO
 
   - Improve ui and cli
 
-############ CONTACT
+## CONTACT
 calvinh34 at gmail
 Bugs, patches and suggestions are welcome !
 
-############ A LAST WORD
+## A LAST WORD
 If nothing work, or if you just want an easy sh script, you may find one in legacy/prof.sh that nearly do the same thing.
