@@ -96,75 +96,83 @@ let sorted tp_list =
   in
   List.sort compare tp_list
 
+let loop connection =
+  let continue = ref true in 
+  (*
+   * Retriving the UE list, and print it to the user
+   *)
+  let ue_list = Libprof.get_UE_list connection in
+      
+  while !continue do
+    print_ue_list ue_list;
+    (*
+     * Ask the user the TP from which UE he want to fetch
+     * send retrieve it, and print it back to the user
+     *)
+    let ue_id = int_of_string (ask "ue # ? \n> ") in
+    let ue = (List.nth ue_list ue_id) in
+    let tp_list = Libprof.get_TP_list connection ue in
+    print_newline ();
+    print_tp_list tp_list;
+    
+    (*
+     * We should now ask what does my user want to do
+     * We suggest to type a lettre from 'u' or 'd', 
+     * respectively to upload or delete on a TP
+     * Then we add a digit corresponding to the TP where
+     * we want the action to be done
+     * If the user just hit RETURN, we will upload to TP 0
+     *)
+    let user_respond = (ask "[u|d] tp id ? (u to upload a file, d to delete a file, q to quit) \n[u0] ") in
+    let what_we_want = Str.regexp"\\(u\\|d\\|q\\)\\([0-9]+\\)" in
+
+    if (String.length user_respond = 0) then
+      (* Nothing read from input, let's upload to 0 *)
+      upload connection (List.nth tp_list 0)
+    else if Str.string_match what_we_want user_respond 0 then
+      ( 
+	(* We will try to read from user input *)
+	let tp_id = int_of_string (Str.matched_group 2 user_respond) in
+	let action = Str.matched_group 1 user_respond in
+	
+	let real_id = List.nth tp_list tp_id in
+	match action with
+	| "u" -> upload connection real_id;
+	| "d" -> Libprof.delete connection real_id;
+	| "q" -> continue := false;
+	| _ -> print_string "Invalid entry\n"
+      )
+  done
+
 let _ =
   
   begin
-
-    try
       (*
        *Retriving login and password from user input, then connect to prof
        *)
-      let login = ask "login ? " in
+    let c = Libprof.init_connection () in
+    let login = ask "login ? " in
+    let continue = ref true in
+    while !continue do
       let password = ask_password "password (hidden input) ? " in
       print_newline ();
-      let c = Libprof.init_connection () in
-      Libprof.log c login password;
-
-      (*
-       * Retriving the UE list, and print it to the user
-       *)
-      let ue_list = Libprof.get_UE_list c in
-      print_newline ();
-      
+      try
+        Libprof.log c login password;
+	continue := false
+      with
+      | Failure s -> (
+	print_string "Incorrect password\n"
+      );
+    done;
+    
+    
       (* By default, print sorted by deadlines list *)
-      if (Array.length Sys.argv = 1 || Sys.argv.(1) = "--sorted") then
-	  let all = sorted (retrieve_all c ue_list) in
-	  print_tp_list all
-      else 
-	(
-	  (* Upload or delete a work *)
-
-	  print_ue_list ue_list;
-      (*
-       * Ask the user the TP from which UE he want to fetch
-       * send retrieve it, and print it back to the user
-       *)
-	  let ue_id = int_of_string (ask "ue # ? \n> ") in
-	  let ue = (List.nth ue_list ue_id) in
-	  let tp_list = Libprof.get_TP_list c ue in
-	  print_newline ();
-	  print_tp_list tp_list;
-	  
-      (*
-       * We should now ask what does my user want to do
-       * We suggest to type a lettre from 'u' or 'd', 
-       * respectively to upload or delete on a TP
-       * Then we add a digit corresponding to the TP where
-       * we want the action to be done
-       * If the user just hit RETURN, we will upload to TP 0
-       *)
-	  let user_respond = (ask "[u|d] tp id ? (u to upload a file, d to delete a file,) \n[u0] ") in
-	  let what_we_want = Str.regexp"\\(u\\|d\\)\\([0-9]+\\)" in
-
-	  if (String.length user_respond = 0) then
-	(* Nothing read from input, let's upload to 0 *)
-	    upload c (List.nth tp_list 0)
-	  else if Str.string_match what_we_want user_respond 0 then
-	    ( 
-	  (* We will try to read from user input *)
-	      let tp_id = int_of_string (Str.matched_group 2 user_respond) in
-	      let action = Str.matched_group 1 user_respond in
-	      
-	      match action with
-	      | "u" -> upload c (List.nth tp_list tp_id)
-	      | "d" -> Libprof.delete c tp_id;
-	      | _ -> failwith "Didn't get what you mean !"
-	    )
-	) 
-    with
-    | Curl.CurlException (reason, code, str) ->
-      Printf.printf "Error: %s\n" str
-    | Failure s ->
-      Printf.printf "Caught exception: %s\n" s
+    if (Array.length Sys.argv = 1 || Sys.argv.(1) = "--sorted") then
+      let ue_list = Libprof.get_UE_list c in
+      let all = sorted (retrieve_all c ue_list) in
+      print_tp_list all
+    else 
+      loop c
   end;
   Curl.global_cleanup ()
+    
