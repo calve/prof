@@ -45,7 +45,7 @@ val upload : t -> tp -> string -> unit
  * Supprime le fichier associé au tp tp_id sur le serveur de prof
  * failwith "delete error" ssi la page renvoyée ne contient pas "Fichier supprimé"
  *)
-val delete : t -> int -> unit
+val delete : t -> tp -> unit
 
 (*
  * @param ue : l'ue a evaluer

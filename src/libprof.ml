@@ -277,7 +277,8 @@ let upload c tp file =
 ;;
 
 (* Delete the file associated with tp_id on the prof server *)
-let delete c tp_id =
+let delete c tp =
+  let tp_id = get_TP_id tp in
   let parse_page page =
     let regexp = Str.regexp ".*Fichier effac.*" in
     (* Un simple compteur *)
