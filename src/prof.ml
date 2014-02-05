@@ -123,25 +123,25 @@ let loop connection =
      * we want the action to be done
      * If the user just hit RETURN, we will upload to TP 0
      *)
-    let user_respond = (ask "[u|d] tp id ? (u to upload a file, d to delete a file, q to quit) \n[u0] ") in
-    let what_we_want = Str.regexp"\\(u\\|d\\|q\\)\\([0-9]+\\)" in
+    let user_respond = (ask "[u|d|b|q] tp id ? (u to upload a file, d to delete a file, b to go back, q to quit) \n[u0] ") in
+    let what_we_want = Str.regexp"\\(u\\|d\\)\\([0-9]+\\)" in
 
-    if (String.length user_respond = 0) then
-      (* Nothing read from input, let's upload to 0 *)
-      upload connection (List.nth tp_list 0)
-    else if Str.string_match what_we_want user_respond 0 then
-      ( 
-	(* We will try to read from user input *)
-	let tp_id = int_of_string (Str.matched_group 2 user_respond) in
-	let action = Str.matched_group 1 user_respond in
-	
-	let real_id = List.nth tp_list tp_id in
-	match action with
-	| "u" -> upload connection real_id;
-	| "d" -> Libprof.delete connection real_id;
-	| "q" -> continue := false;
-	| _ -> print_string "Invalid entry\n"
-      )
+    match user_respond with 
+    | "" -> upload connection (List.nth tp_list 0)
+    | "q" -> continue := false;
+    | "b" -> ();    
+    | _ ->      
+      if Str.string_match what_we_want user_respond 0 then
+	( 
+	  (* We will try to read from user input *)
+	  let tp_id = int_of_string (Str.matched_group 2 user_respond) in
+	  let action = Str.matched_group 1 user_respond in
+	  let real_id = List.nth tp_list tp_id in
+	  match action with
+	  | "u" -> upload connection real_id;
+	  | "d" -> Libprof.delete connection real_id;
+	  | _ -> print_string "Invalid entry\n";
+	);
   done
 
 let _ =
