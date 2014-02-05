@@ -47,16 +47,17 @@ To get the last version
 
 ## USAGE
 
-   * 'prof'  will let you list and delete your TPs after choosing an UE.
-   * 'prof --sorted' will list every TPs found, and print them sorted by deadline
-   * 'prof archive.tar.gz' will upload archive to the place you will specifie
+   * 'prof' or 'prof --sorted' will list every TPs found, and print them sorted by deadline
+   * 'prof archive.tar.gz' will let you list and delete your TPs after choosing an UE.
 
     ./prof [archive.tar.gz|--sorted]
 
 archive.tar.gz is necessary if you want to upload a file
+If you want to move around, try "./prof anything"
 
 ## CHANGELOG
 
+ - Better ui, now loop thru tp and ue list
  - Fix : Date comparaison
  - Added argument --sorted to list all TPs sorted by time. Still experimental
  - QuickFix : Clear buffer containing downloaded pages before getting TP list 
