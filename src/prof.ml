@@ -98,16 +98,11 @@ let sorted tp_list =
 
 let loop connection =
   let continue = ref true in 
-  (*
-   * Retriving the UE list, and print it to the user
-   *)
   let ue_list = Libprof.get_UE_list connection in
       
   while !continue do
     print_ue_list ue_list;
-    (*
-     * Ask the user the TP from which UE he want to fetch
-     * send retrieve it, and print it back to the user
+    (* Which tp do you want ?
      *)
     let ue_id = int_of_string (ask "ue # ? \n> ") in
     let ue = (List.nth ue_list ue_id) in
