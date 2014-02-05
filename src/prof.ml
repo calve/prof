@@ -118,12 +118,13 @@ let _ =
       let ue_list = Libprof.get_UE_list c in
       print_newline ();
       
-      if (Array.length Sys.argv > 0 && Sys.argv.(1) = "--sorted") then
-	let all = sorted (retrieve_all c ue_list) in
-	print_tp_list all
-      else
+      (* By default, print sorted by deadlines list *)
+      if (Array.length Sys.argv = 1 || Sys.argv.(1) = "--sorted") then
+	  let all = sorted (retrieve_all c ue_list) in
+	  print_tp_list all
+      else 
 	(
-	  (* We don't won't to just list next deadlines *)
+	  (* Upload or delete a work *)
 
 	  print_ue_list ue_list;
       (*
