@@ -89,8 +89,6 @@ let retrieve_all connection ue_list =
     )
   in
   retrieve_all connection ue_list
-(* Flat the list, ie : 'a list list -> 'a list *)
-(*List.concat (retrieve_all connection ue_list)*)
 
 let sorted tp_list =
   let compare tp1 tp2 =
