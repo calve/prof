@@ -1,5 +1,6 @@
 OUT=prof
 SRCDIR=src
+DESTDIR=/usr/bin
 
 .PHONY : all clean
 all: $(OUT)
@@ -12,3 +13,6 @@ $(OUT):
 clean:
 	make -C $(SRCDIR) clean
 	$(RM) -Rdv $(OUT)
+
+install: all
+	cp $(OUT) $(DESTDIR)
