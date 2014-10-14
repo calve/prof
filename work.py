@@ -19,6 +19,11 @@ class Work:
         return "{0}({1} - {2})".format(self.title, self.value, self.is_open)
 
     def parse(self, html, field=0, attributes=None):
+        """
+        Get a list of data from a work_html_parser and try to find metadatas.
+        field : id of the parent field
+        attributes : list of extra href attribute to determine this id
+        """
         # Parse this work id
         _, href = attributes[0][0]
         value = value_re.search(href)
@@ -31,6 +36,7 @@ class Work:
         self.title = html[0]
 
     def upload(self, filename):
+        """Upload filename to this work"""
         # Prof is really dirty, we need to re-get the project page before upload
         payload = {
             'id_projet': self.value

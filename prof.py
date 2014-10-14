@@ -4,12 +4,14 @@ from init import initiate_session
 
 
 def credentials():
+    """Ask user for credentials"""
     login = input("login? ")
     password = getpass.getpass("pass? ")
     return (login, password)
 
 
 def print_fields(fields):
+    """Print a list of available fields and works"""
     for (_, name, works) in fields:
         print(name)
         for work in works:
@@ -17,6 +19,7 @@ def print_fields(fields):
 
 
 def send_work():
+    """Ask user for a file to send to a work"""
     user_value = input("id? ")
     filename = input("filename? ")
 
@@ -29,7 +32,7 @@ def send_work():
         user_value = input("id? ")
         return
 
-
+# The actual progression through the website
 (login, password) = credentials()
 fields_html = initiate_session(login, password)
 

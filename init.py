@@ -6,6 +6,7 @@ prof_session = requests.Session()
 
 
 def initiate_session(login, password):
+    """Initiate a session globally used in prof. Log and retrieve the cookie"""
     prof_session.get(baseurl+"/index.php")
     payload = {
         'login': login,
