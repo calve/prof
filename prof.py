@@ -1,11 +1,7 @@
 import urllib
-import re
 import getpass
-from init import *
+from init import prof_session, baseurl
 import field_html_parser
-
-
-option_regex = re.compile('OPTION')
 
 
 login = input("login? ")
@@ -19,7 +15,6 @@ payload = {
 }
 
 work_html = prof_session.post(baseurl+"/login.php", params=payload)
-result = option_regex.match(work_html.content.decode("iso-8859-1"))
 parser = field_html_parser.FieldHTMLParser()
 parser.feed(work_html.content.decode("iso-8859-1"))
 
