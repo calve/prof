@@ -3,12 +3,13 @@ from work import Work
 
 
 class WorkHTMLParser(HTMLParser):
-    def __init__(self):
+    def __init__(self, field):
         HTMLParser.__init__(self)
         self.in_row = False
         self.current_data = []
         self.current_attributes = []
         self.works = []
+        self.field = field
 
     def handle_starttag(self, tag, attrs):
         if tag == "tr":
@@ -27,7 +28,7 @@ class WorkHTMLParser(HTMLParser):
     def handle_endtag(self, tag):
         if tag == "tr" and self.in_row:
             self.current_work = Work()
-            self.current_work.parse(self.current_data, self.current_attributes)
+            self.current_work.parse(self.current_data, self.field, self.current_attributes)
             self.works.append(self.current_work)
             self.in_row = False
 

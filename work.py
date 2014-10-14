@@ -8,6 +8,7 @@ class Work:
         self.title = title
         self.value = 0
         self.is_open = False
+        self.field = 0
 
     def __str__(self):
         return self.title
@@ -15,8 +16,7 @@ class Work:
     def __repr__(self):
         return "{0}({1} - {2})".format(self.title, self.value, self.is_open)
 
-    def parse(self, html, attributes=None):
-        print(html)
+    def parse(self, html, field=0, attributes=None):
         # Parse this work id
         _, href = attributes[0][0]
         value = value_re.search(href)
@@ -24,6 +24,7 @@ class Work:
         if 'Ouvert' in html:
             self.is_open = True
 
+        self.field = field
         self.value = value.group()
         self.title = html[0]
 

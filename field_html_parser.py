@@ -17,7 +17,7 @@ class FieldHTMLParser(HTMLParser):
             _, value = self.current_attributes[0]
             payload = {'id_projet': value}
             work_html = prof_session.post(baseurl+"/main.php", params=payload)
-            workParser = WorkHTMLParser()
+            workParser = WorkHTMLParser(value)
             workParser.feed(work_html.content.decode("iso-8859-1"))
             workList = workParser.getWorks()
             current_tp = (value, data, workList)
