@@ -43,3 +43,4 @@ fields = parser.getFields()
 
 print_fields(fields)
 send_work()
+print("done, you should verify the upload on the website")

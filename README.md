@@ -39,6 +39,8 @@ It ask for an id (you guessed it, the number printed in front of the work title)
 
 And it is done
 
+    done, you should verify the upload on the website
+
 prof is still under devel, it may crash, loose your files, eat your goat.
 Always check your file is actually send on the remote server.
 
