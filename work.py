@@ -1,4 +1,6 @@
 import re
+from init import prof_session, baseurl
+
 
 value_re = re.compile('(\d+)')
 
@@ -28,8 +30,22 @@ class Work:
         self.value = value.group()
         self.title = html[0]
 
-    def upload(self, fileobject):
-        pass
+    def upload(self, filename):
+        # Prof is really dirty, we need to re-get the project page before upload
+        payload = {
+            'id_projet': self.value
+        }
+        prof_session.post(baseurl+"/main.php", params=payload)
+        # We also need to get the upload page...
+        payload = {
+            'id': int(self.value)
+        }
+        prof_session.get(baseurl+"/upload.php", params=payload)
+        # Finally we can actually send
+        payload = {
+            'MAX_FILE_SIZE': 1000000
+        }
+        prof_session.post(baseurl+'/upload2.php', files={'fichier1': open(filename, 'rb')}, params=payload)
 
     def get_description(self):
         pass
