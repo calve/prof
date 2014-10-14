@@ -3,38 +3,77 @@ prof
 
 ### An useful program to upload your work on PROF
 
-PROF is where students from computer science of LILLE1 should upload their work.
+[PROF] is the website where peoples studying computer science at Lille1 should upload their work.
 
-Get the newest version on http://github.com/calve/prof
+This tool give you ability to upload your archive from the command line.
+
+First you give your credentials
+
+    login? calve
+    pass?
+
+In exchange, it give you the tree of all avalaible works. The boolean is whether you can upload on it or not.
+
+    TP_ACT_Groupe1
+    - 23 : TP Ordres de Grandeu (False)
+    - 88 : TP Diviser pour Régn (False)
+    - 103 :  TP 3 Compression Im (True)
+    TP ASE Contextes
+    - 45 : TP 2 (False)
+    - 46 : TP 4 (False)
+    TP ASE Disques
+    - 47 : TP 1 (False)
+    - 48 : TP 2 (True)
+    - 49 : TP 3 (True)
+    TP ASE MMU
+    - 50 : TP 1 (True)
+    - 51 : TP 2 (True)
+    M1AEO
+    - 95 : Bonus TD (False)
+    - 184 : TP roulette (True)
+
+It ask for an id (you guessed it, the number printed in front of the work title)
+
+    id? 95
+    filename? test.tar.gz
+
+And it is done
 
 prof is still under devel, it may crash, loose your files, eat your goat.
 Always check your file is actually send on the remote server.
 
+[PROF]: https://prof.fil.univ-lille1.fr
 
-## REQUIREMENTS :
+## Fast setup
+
+    sudo apt-get install python3-pip
+
+Or whatever your packet manager is and how it named ``pip`` for python3
+
+    sudo pip3 install requests
+    git clone https://github.com/calve/prof.git
+    cd prof
+    python3 prof.py
+
+
+To get a usable global command, add ``alias prof=/path/to/prof/prof.py`` in your ``~.bashrc`` file.
+Alternatively, you could add it to your ``$PATH``
+
+## Download & Execute
+
+To download latests source and run the software
+
+    git clone https://github.com/calve/prof.git
+    python3 prof.py
+
+
+## Requirements
 
  * python3
  * python3-requests
 
 You can get requests with ``sudo pip install requests``
 
-## DOWNLOAD & EXECUTE
-
-To download latests source and compile
-
-    git clone https://github.com/calve/prof.git
-    python3 prof.py
-
-
-## USAGE
-
-   * 'prof' or 'prof --sorted' will list every TPs found, and print them sorted by deadline
-   * 'prof archive.tar.gz' will let you list and delete your TPs after choosing an UE.
-
-    ./prof [archive.tar.gz|--sorted]
-
-archive.tar.gz is necessary if you want to upload a file
-If you want to move around, try "./prof anything"
 
 ## CHANGELOG
 
@@ -63,5 +102,6 @@ If you want to move around, try "./prof anything"
 
 Bugs, patches and suggestions are welcome !
 
-## A LAST WORD
+## Last word
+
 If nothing work, or if you just want an easy sh script, you may find one in legacy/prof.sh that nearly do the same thing.
