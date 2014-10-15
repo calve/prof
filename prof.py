@@ -20,17 +20,20 @@ def print_fields(fields):
 
 def send_work():
     """Ask user for a file to send to a work"""
-    user_value = input("id? ")
-    filename = input("filename? ")
-
-    for (_, name, works) in fields:
-        for work in works:
-            if work.value == user_value:
-                work.upload(filename)
-                return
-        print("id not found")
+    while 1:
         user_value = input("id? ")
-        return
+        for (_, name, works) in fields:
+            for work in works:
+                if work.value == user_value:
+                    filename = input("filename? ")
+                    while 1:
+                        try:
+                            work.upload(filename)
+                            break
+                        except FileNotFoundError:
+                            print("{0} not found in current dir".format(filename))
+                            filename = input("filename? ")
+        print("id '{0}' not found".format(user_value))
 
 # The actual progression through the website
 (login, password) = credentials()
