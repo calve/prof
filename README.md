@@ -12,25 +12,25 @@ First you give your credentials
     login? calve
     pass?
 
-In exchange, it give you the tree of all avalaible works. The boolean is whether you can upload on it or not.
+In exchange, it give you the tree of all avalaible works.
 
     TP_ACT_Groupe1
-    - 23 : TP Ordres de Grandeu (False)
-    - 88 : TP Diviser pour Régn (False)
-    - 103 :  TP 3 Compression Im (True)
+    - 23 : TP Ordres de Grandeu (Closed)
+    - 88 : TP Diviser pour Régn (Closed)
+    - 103 :  TP 3 Compression Im (Open - Time remaining: 6 days, 17:43:18.160355)
     TP ASE Contextes
-    - 45 : TP 2 (False)
-    - 46 : TP 4 (False)
+    - 45 : TP 2 (Closed)
+    - 46 : TP 4 (Closed)
     TP ASE Disques
-    - 47 : TP 1 (False)
-    - 48 : TP 2 (True)
-    - 49 : TP 3 (True)
+    - 47 : TP 1 (Closed)
+    - 48 : TP 2 (Open - Time remaining: 4 days, 21:28:18.160231)
+    - 49 : TP 3 (Open - Time remaining: 32 days, 21:28:18.160197)
     TP ASE MMU
-    - 50 : TP 1 (True)
-    - 51 : TP 2 (True)
+    - 50 : TP 1 (Open - Time remaining: 53 days, 21:28:18.160153)
+    - 51 : TP 2 (Open - Time remaining: 60 days, 21:28:18.160116)
     M1AEO
-    - 95 : Bonus TD (False)
-    - 184 : TP roulette (True)
+    - 95 : Bonus TD (Closed)
+    - 184 : TP roulette (Open - Time remaining: 5 days, 18:28:18.160059)
 
 It ask for an id (you guessed it, the number printed in front of the work title)
 

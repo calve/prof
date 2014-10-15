@@ -1,6 +1,6 @@
 import re
+import datetime
 from init import prof_session, baseurl
-
 
 value_re = re.compile('(\d+)')
 
@@ -11,12 +11,13 @@ class Work:
         self.value = 0
         self.is_open = False
         self.field = 0
+        self.date = 0
 
     def __str__(self):
         return self.title
 
     def __repr__(self):
-        return "{0}({1} - {2})".format(self.title, self.value, self.is_open)
+        return "{0}({1} - {2})".format(self.title, self.value, self.verify_open())
 
     def parse(self, html, field=0, attributes=None):
         """
@@ -30,6 +31,7 @@ class Work:
 
         if 'Ouvert' in html:
             self.is_open = True
+            self.date = html[2]
 
         self.field = field
         self.value = value.group()
@@ -58,3 +60,16 @@ class Work:
 
     def get_due_date(self):
         pass
+
+    def verify_open(self):
+        if self.is_open:
+            return "Open - Time remaining: {0}".format(self.getTime())
+        else:
+            return "Closed"
+
+    def getTime(self):
+        date_split = self.date.split("-")
+        day_split = date_split[0].split("/")
+        hours_split = date_split[1].split(":")
+        day_given = datetime.datetime(int("20"+day_split[2]), int(day_split[1]), int(day_split[0]), int(hours_split[0]), int(hours_split[1]))
+        return day_given - datetime.datetime.now()

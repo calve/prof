@@ -15,7 +15,7 @@ def print_fields(fields):
     for (_, name, works) in fields:
         print(name)
         for work in works:
-            print('- {0} : {1} ({2})'.format(work.value, work.title, work.is_open))
+            print('- {0} : {1} ({2})'.format(work.value, work.title, work.verify_open()))
 
 
 def send_work():
@@ -24,7 +24,10 @@ def send_work():
         user_value = input("id? ")
         for (_, name, works) in fields:
             for work in works:
-                if work.value == user_value:
+                if work.value == user_value:  # Found it !
+                    if not work.is_open:  # Verify it is open
+                        print("{0} is closed for upload".format(work.title))
+                        break
                     filename = input("filename? ")
                     while 1:
                         try:
