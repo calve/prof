@@ -20,7 +20,14 @@ def print_fields(fields):
 
 def send_work():
     """Ask user for a file to send to a work"""
-    user_value = input("id? ")
+    #We verify if the repo asked is still open or not
+    work_verify = False
+    while work_verify == False:
+        user_value = input("id? ")
+        for (_, name, works) in fields:
+            for work in works:
+                if work.value == user_value and work.is_open == True:
+                    work_verify = True   
     filename = input("filename? ")
 
     for (_, name, works) in fields:
