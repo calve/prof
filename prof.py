@@ -32,6 +32,12 @@ def send_work():
         user_value = input("id? ")
         return
 
+def verify_open(self):
+    if self.is_open:
+        return "Open"
+    else:
+        return "Closed"
+
 # The actual progression through the website
 (login, password) = credentials()
 fields_html = initiate_session(login, password)
