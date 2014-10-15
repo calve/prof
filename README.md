@@ -97,6 +97,7 @@ You can get requests with ``sudo pip install requests``
 
   - Improve ui and cli
   - Validate archive before upload
+  - Get informations about a repo (the administrator, ...)
 
 ## CONTACT
 
