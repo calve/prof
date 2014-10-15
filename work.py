@@ -13,9 +13,16 @@ class Work:
         self.field = 0
         self.due_date = 0
         self.opening_date = 0
+        self.filename = None
 
     def __str__(self):
-        return "{0}({1} - {2})".format(self.title, self.value, self.verify_open())
+        string = "{0} : {1}{2}\t{3}".format(
+            self.value.ljust(3),  # Pad with space so the string is at least 3 characters long
+            self.title.ljust(30),
+            self.verify_open(),
+            "("+self.filename+")" if self.filename else "",
+        )
+        return string
 
     def __repr__(self):
         return "{0}({1})".format(self.title, self.value)
@@ -38,6 +45,12 @@ class Work:
         self.title = html[0]
         self.opening_date = html[1]
         self.due_date = html[2]
+
+        if html[4] != 'Non':
+            # html[4] looks like ``Le 06/10/14-19:06 (test.tar.gz)``
+            # We will first split on spaces
+            # Then [1:-1] will remove the first and last letter of the resulting string
+            self.filename = html[4].split()[2][1:-1]
 
     def upload(self, filename):
         """Upload filename to this work"""

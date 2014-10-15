@@ -15,22 +15,23 @@ First you give your credentials
 In exchange, it give you the tree of all avalaible works.
 
     TP_ACT_Groupe1
-    - 23 : TP Ordres de Grandeu (Closed)
-    - 88 : TP Diviser pour Régn (Closed)
-    - 103 :  TP 3 Compression Im (Open - Time remaining: 6 days, 17:43:18.160355)
+    - 23  : TP Ordres de Grandeu          Closed    (calve-act-1.tar.gz)
+    - 88  : TP Diviser pour Régn          Closed    (calve-act2.tar.gz)
+    - 103 :  TP 3 Compression Im          Open - Time remaining: 6 days, 17:09:56.090487
     TP ASE Contextes
-    - 45 : TP 2 (Closed)
-    - 46 : TP 4 (Closed)
+    - 45  : TP 2                          Closed    (calve-ase-2.tar.gz)
+    - 46  : TP 4                          Closed    (calve-ase-2.tar.gz)
     TP ASE Disques
-    - 47 : TP 1 (Closed)
-    - 48 : TP 2 (Open - Time remaining: 4 days, 21:28:18.160231)
-    - 49 : TP 3 (Open - Time remaining: 32 days, 21:28:18.160197)
+    - 47  : TP 1                          Closed    (calve-ase-3.tar.gz)
+    - 48  : TP 2                          Open - Time remaining: 4 days, 20:54:56.090348
+    - 49  : TP 3                          Open - Time remaining: 32 days, 20:54:56.090310
     TP ASE MMU
-    - 50 : TP 1 (Open - Time remaining: 53 days, 21:28:18.160153)
-    - 51 : TP 2 (Open - Time remaining: 60 days, 21:28:18.160116)
+    - 50  : TP 1                          Open - Time remaining: 53 days, 20:54:56.090262
+    - 51  : TP 2                          Open - Time remaining: 60 days, 20:54:56.090225
     M1AEO
-    - 95 : Bonus TD (Closed)
-    - 184 : TP roulette (Open - Time remaining: 5 days, 18:28:18.160059)
+    - 95  : Bonus TD                      Closed
+    - 184 : TP roulette                   Open - Time remaining: 5 days, 17:54:56.090157
+
 
 It ask for an id (you guessed it, the number printed in front of the work title)
 
