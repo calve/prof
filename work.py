@@ -11,13 +11,13 @@ class Work:
         self.value = 0
         self.is_open = False
         self.field = 0
-        self.date = 0
+        self.due_date = 0
 
     def __str__(self):
-        return self.title
+        return "{0}({1} - {2})".format(self.title, self.value, self.verify_open())
 
     def __repr__(self):
-        return "{0}({1} - {2})".format(self.title, self.value, self.verify_open())
+        return "{0}({1})".format(self.title, self.value)
 
     def parse(self, html, field=0, attributes=None):
         """
@@ -31,11 +31,11 @@ class Work:
 
         if 'Ouvert' in html:
             self.is_open = True
-            self.date = html[2]
 
         self.field = field
         self.value = value.group()
         self.title = html[0]
+        self.due_date = html[2]
 
     def upload(self, filename):
         """Upload filename to this work"""
@@ -68,7 +68,7 @@ class Work:
             return "Closed"
 
     def getTime(self):
-        date_split = self.date.split("-")
+        date_split = self.due_date.split("-")
         day_split = date_split[0].split("/")
         hours_split = date_split[1].split(":")
         day_given = datetime.datetime(int("20"+day_split[2]), int(day_split[1]), int(day_split[0]), int(hours_split[0]), int(hours_split[1]))
