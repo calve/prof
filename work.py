@@ -12,6 +12,7 @@ class Work:
         self.is_open = False
         self.field = 0
         self.due_date = 0
+        self.opening_date = 0
 
     def __str__(self):
         return "{0}({1} - {2})".format(self.title, self.value, self.verify_open())
@@ -35,6 +36,7 @@ class Work:
         self.field = field
         self.value = value.group()
         self.title = html[0]
+        self.opening_date = html[1]
         self.due_date = html[2]
 
     def upload(self, filename):
