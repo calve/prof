@@ -15,7 +15,7 @@ def print_fields(fields):
     for (_, name, works) in fields:
         print(name)
         for work in works:
-            print('- {0} : {1} ({2})'.format(work.value, work.title, work.is_open))
+            print('- {0} : {1} ({2})'.format(work.value, work.title, work.verify_open()))
 
 
 def send_work():

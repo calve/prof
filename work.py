@@ -16,7 +16,7 @@ class Work:
         return self.title
 
     def __repr__(self):
-        return "{0}({1} - {2})".format(self.title, self.value, self.is_open)
+        return "{0}({1} - {2})".format(self.title, self.value, self.verify_open())
 
     def parse(self, html, field=0, attributes=None):
         """
