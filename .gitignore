@@ -1,5 +1,3 @@
 cookie
-*.cmi
-*.cmo
-prof
+*.pyc
 samples/
