@@ -1,12 +1,18 @@
 import getpass
 import field_html_parser
+from os import environ
 from init import initiate_session
 
 
 def credentials():
     """Ask user for credentials"""
-    login = input("login? ")
-    password = getpass.getpass("pass? ")
+    login = environ.get("PROF_LOGIN")
+    password = environ.get("PROF_PASSWORD")
+    if not login :
+        login = input("login? ")
+        print("\t\tDon't get prompted everytime. Store your login in the PROF_LOGIN environment variable")
+    if not password:
+        password = getpass.getpass("pass? ")
     return (login, password)
 
 

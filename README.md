@@ -77,6 +77,14 @@ To download latests source and run the software
 
 You can get requests with ``sudo pip install requests``
 
+## Configuration
+
+If you do not want to get prompted everytime for your credentials, put them in environments variables ``PROF_LOGIN`` and/or ``PROF_PASSWORD``.
+Add this line to your ``~/.bashrc``
+
+    export PROF_LOGIN=yourlogin
+
+prof will ask you if one of them is missing.
 
 ## CHANGELOG
 
