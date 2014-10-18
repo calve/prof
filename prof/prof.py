@@ -1,7 +1,7 @@
 import getpass
-import field_html_parser
+from prof.init import initiate_session
+from prof.field_html_parser import FieldHTMLParser
 from os import environ
-from init import initiate_session
 
 
 def credentials():
@@ -52,7 +52,7 @@ def main():
     fields_html = initiate_session(login, password)
 
     # Parse the project page, and extra available fields
-    parser = field_html_parser.FieldHTMLParser()
+    parser = FieldHTMLParser()
     parser.feed(fields_html.content.decode("iso-8859-1"))
     fields = parser.getFields()
 

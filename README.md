@@ -7,6 +7,12 @@ prof
 
 This tool give you ability to upload your archive from the command line.
 
+Download the source and run the program
+
+    git clone https://github.com/calve/prof.git
+    cd prof
+    python3 run.py
+
 First you give your credentials
 
     login? calve
@@ -56,7 +62,7 @@ Or whatever your packet manager is and how it named ``pip`` for python3
     sudo pip3 install requests
     git clone https://github.com/calve/prof.git
     cd prof
-    python3 prof.py
+    python3 run.py
 
 
 To get a usable global command, add ``alias prof=/path/to/prof/prof.py`` in your ``~.bashrc`` file.
@@ -67,7 +73,8 @@ Alternatively, you could add it to your ``$PATH``
 To download latests source and run the software
 
     git clone https://github.com/calve/prof.git
-    python3 prof.py
+    cd prof
+    python3 run.py
 
 
 ## Requirements

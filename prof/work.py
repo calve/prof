@@ -1,6 +1,6 @@
 import re
 import datetime
-from init import prof_session, baseurl
+from prof.init import prof_session, baseurl
 
 value_re = re.compile('(\d+)')
 
