@@ -6,9 +6,14 @@ from parsers.field_html_parser import FieldHTMLParser
 from work import get_work, all_works
 
 
-def credentials():
-    """Ask user for credentials"""
-    login = environ.get("PROF_LOGIN")
+def credentials(login=None):
+    """
+    Find user credentials. We should have parsed the command line for a ``--login`` option.
+    We will try to find credentials in environment variables.
+    We will ask user if we cannot find any in arguments nor environment
+    """
+    if not login:
+        login = environ.get("PROF_LOGIN")
     password = environ.get("PROF_PASSWORD")
     if not login:
         login = input("login? ")
@@ -66,11 +71,12 @@ def main():
     argument_parser.add_argument('-f', '--filename', help='The name of the file to send to prof')
     argument_parser.add_argument('-i', '--id', help='The project id to upload your file to', type=int)
     argument_parser.add_argument('--sorted', help='Sort project by due dates', action="store_true")
+    argument_parser.add_argument('--login', help='Your prof login', type=str)
     argument_parser.parse_args()
     arguments = argument_parser.parse_args()
 
     # The actual progression through the website
-    (login, password) = credentials()
+    (login, password) = credentials(login=arguments.login)
     fields_html = initiate_session(login, password)
 
     # Parse the project page, and extra available fields
