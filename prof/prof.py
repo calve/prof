@@ -3,7 +3,7 @@ import getpass
 from os import environ
 from init import initiate_session
 from parsers.field_html_parser import FieldHTMLParser
-from work import get_work
+from work import get_work, all_works
 
 
 def credentials():
@@ -18,12 +18,22 @@ def credentials():
     return (login, password)
 
 
-def print_fields(fields):
-    """Print a list of available fields and works"""
-    for (_, name, works) in fields:
-        print(name)
+def print_fields(fields, sort_by_date=False):
+    """
+    Print a list of available fields and works
+    sort_by_date : boolean whether we print works by their due date
+    """
+    if not sort_by_date:
+        for (_, name, works) in fields:
+            print(name)
+            for work in works:
+                print('- '+str(work))
+    else:
+        works = all_works
+        # Sort works by due_date
+        works.sort(key=lambda x: (not x.is_open, x.due_date), reverse=True)
         for work in works:
-            print('- '+str(work))
+            print(str(work))
 
 
 def send_work(fields, work_id=None, filename=None):
@@ -55,6 +65,7 @@ def main():
     argument_parser = argparse.ArgumentParser()
     argument_parser.add_argument('-f', '--filename', help='The name of the file to send to prof')
     argument_parser.add_argument('-i', '--id', help='The project id to upload your file to', type=int)
+    argument_parser.add_argument('--sorted', help='Sort project by due dates', action="store_true")
     argument_parser.parse_args()
     arguments = argument_parser.parse_args()
 
@@ -67,7 +78,7 @@ def main():
     parser.feed(fields_html.content.decode("iso-8859-1"))
     fields = parser.getFields()
 
-    print_fields(fields)
+    print_fields(fields, sort_by_date=arguments.sorted)
     send_work(fields, work_id=arguments.id, filename=arguments.filename)
     print("done, you should verify the upload on the website")
 
