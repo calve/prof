@@ -4,6 +4,7 @@ from prof.init import prof_session, baseurl
 
 value_re = re.compile('(\d+)')
 date_format = "%d/%m/%y-%H:%M"
+all_works = []  # A list containing all the parsed Works
 
 
 class Work:
@@ -15,10 +16,11 @@ class Work:
         self.due_date = 0
         self.opening_date = 0
         self.filename = None
+        all_works.append(self)
 
     def __str__(self):
         string = "{0} : {1}{2}\t{3}".format(
-            self.value.ljust(3),  # Pad with space so the string is at least 3 characters long
+            str(self.value).ljust(3),  # Pad with space so the string is at least 3 characters long
             self.title.ljust(30),
             self.verify_open(),
             "("+self.filename+")" if self.filename else "",
@@ -42,7 +44,7 @@ class Work:
             self.is_open = True
 
         self.field = field
-        self.value = value.group()
+        self.value = int(value.group())
         self.title = html[0]
         self.opening_date = datetime.datetime.strptime(html[1], date_format)
         self.due_date = datetime.datetime.strptime(html[2], date_format)
@@ -86,3 +88,13 @@ class Work:
 
     def get_remaining_time(self):
         return self.due_date - datetime.datetime.now()
+
+
+def get_work(work_id):
+    """
+    Find a work by it's id
+    """
+    for work in all_works:
+        if work.value == int(work_id):
+            return work
+    return None
