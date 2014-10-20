@@ -2,6 +2,7 @@ import getpass
 from prof.init import initiate_session
 from prof.parsers.field_html_parser import FieldHTMLParser
 from os import environ
+from prof.work import get_work
 
 
 def credentials():
@@ -24,25 +25,29 @@ def print_fields(fields):
             print('- '+str(work))
 
 
-def send_work(fields):
+def send_work(fields, work_id=None, filename=None):
     """Ask user for a file to send to a work"""
     while 1:
-        user_value = input("id? ")
-        for (_, name, works) in fields:
-            for work in works:
-                if work.value == user_value:  # Found it !
-                    if not work.is_open:  # Verify it is open
-                        print("{0} is closed for upload".format(work.title))
-                        break
-                    filename = input("filename? ")
-                    while 1:
-                        try:
-                            work.upload(filename)
-                            break
-                        except FileNotFoundError:
-                            print("{0} not found in current dir".format(filename))
-                            filename = input("filename? ")
-        print("id '{0}' not found".format(user_value))
+        if not work_id:
+            work_id = input("id? ")
+        work = get_work(work_id)
+        if not work:
+            print("id '{0}' not found".format(work_id))
+            work_id = None
+            continue
+        if not work.is_open:  # Verify it is open
+            print("{0} is closed for upload".format(work.title))
+            work_id = None
+            continue
+        if not filename:
+            filename = input("filename? ")
+        while 1:
+            try:
+                work.upload(filename)
+                return
+            except FileNotFoundError:
+                print("{0} not found in current dir".format(filename))
+                filename = None
 
 
 def main():
