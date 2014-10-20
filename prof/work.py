@@ -3,6 +3,7 @@ import datetime
 from prof.init import prof_session, baseurl
 
 value_re = re.compile('(\d+)')
+date_format = "%d/%m/%y-%H:%M"
 
 
 class Work:
@@ -43,8 +44,8 @@ class Work:
         self.field = field
         self.value = value.group()
         self.title = html[0]
-        self.opening_date = html[1]
-        self.due_date = html[2]
+        self.opening_date = datetime.datetime.strptime(html[1], date_format)
+        self.due_date = datetime.datetime.strptime(html[2], date_format)
 
         if html[4] != 'Non':
             # html[4] looks like ``Le 06/10/14-19:06 (test.tar.gz)``
@@ -83,8 +84,4 @@ class Work:
             return "Closed"
 
     def getTime(self):
-        date_split = self.due_date.split("-")
-        day_split = date_split[0].split("/")
-        hours_split = date_split[1].split(":")
-        day_given = datetime.datetime(int("20"+day_split[2]), int(day_split[1]), int(day_split[0]), int(hours_split[0]), int(hours_split[1]))
-        return day_given - datetime.datetime.now()
+        return self.due_date - datetime.datetime.now()
