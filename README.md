@@ -11,7 +11,7 @@ Download the source and run the program
 
     git clone https://github.com/calve/prof.git
     cd prof
-    python3 run.py
+    python3 prof/prof.py
 
 First you give your credentials
 
@@ -62,7 +62,7 @@ Or whatever your package manager is and how it named ``pip`` for python3
     sudo pip3 install requests
     git clone https://github.com/calve/prof.git
     cd prof
-    python3 run.py
+    python3 prof/prof.py
 
 ## Download & Execute
 
@@ -70,7 +70,7 @@ To download latests source and run the software
 
     git clone https://github.com/calve/prof.git
     cd prof
-    python3 run.py
+    python3 prof/prof.py
 
 ## Requirements
 
@@ -81,7 +81,9 @@ You can get requests with ``sudo pip install requests``
 
 ## Configuration
 
-To get a usable global command, add ``alias prof=python3 /path/to/prof/prof.py`` in your ``~/.bashrc`` file.
+To get a usable global command, add to your ``~/.bashrc`` file
+
+    alias prof=python3 /path/to/prof/prof/prof.py``
 
 If you do not want to get prompted everytime for your credentials, put them in environments variables ``PROF_LOGIN`` and/or ``PROF_PASSWORD``.
 Add this line to your ``~/.bashrc``

@@ -1,5 +1,5 @@
 from html.parser import HTMLParser
-from prof.work import Work
+from work import Work
 
 
 class WorkHTMLParser(HTMLParser):

@@ -1,9 +1,9 @@
 import argparse
 import getpass
 from os import environ
-from prof.init import initiate_session
-from prof.parsers.field_html_parser import FieldHTMLParser
-from prof.work import get_work
+from init import initiate_session
+from parsers.field_html_parser import FieldHTMLParser
+from work import get_work
 
 
 def credentials():
