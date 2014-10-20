@@ -79,9 +79,9 @@ class Work:
 
     def verify_open(self):
         if self.is_open:
-            return "Open - Time remaining: {0}".format(self.getTime())
+            return "Open - Time remaining: {0}".format(self.get_remaining_time())
         else:
             return "Closed"
 
-    def getTime(self):
+    def get_remaining_time(self):
         return self.due_date - datetime.datetime.now()
