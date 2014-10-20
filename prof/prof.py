@@ -1,7 +1,8 @@
+import argparse
 import getpass
+from os import environ
 from prof.init import initiate_session
 from prof.parsers.field_html_parser import FieldHTMLParser
-from os import environ
 from prof.work import get_work
 
 
@@ -51,6 +52,11 @@ def send_work(fields, work_id=None, filename=None):
 
 
 def main():
+    argument_parser = argparse.ArgumentParser()
+    argument_parser.add_argument('-f', '--filename', help='The name of the file to send to prof')
+    argument_parser.add_argument('-i', '--id', help='The project id to upload your file to', type=int)
+    argument_parser.parse_args()
+    arguments = argument_parser.parse_args()
 
     # The actual progression through the website
     (login, password) = credentials()
@@ -62,7 +68,7 @@ def main():
     fields = parser.getFields()
 
     print_fields(fields)
-    send_work(fields)
+    send_work(fields, work_id=arguments.id, filename=arguments.filename)
     print("done, you should verify the upload on the website")
 
 
