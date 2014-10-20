@@ -57,7 +57,7 @@ class Work:
         """Upload filename to this work"""
         # Prof is really dirty, we need to re-get the project page before upload
         payload = {
-            'id_projet': self.value
+            'id_projet': self.field
         }
         prof_session.post(baseurl+"/main.php", params=payload)
         # We also need to get the upload page...
@@ -70,6 +70,7 @@ class Work:
             'MAX_FILE_SIZE': 1000000
         }
         prof_session.post(baseurl+'/upload2.php', files={'fichier1': open(filename, 'rb')}, params=payload)
+        # Here we should verify upload !
 
     def get_description(self):
         pass
