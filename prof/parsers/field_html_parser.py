@@ -1,5 +1,5 @@
 from html.parser import HTMLParser
-from prof.work_html_parser import WorkHTMLParser
+from prof.parsers.work_html_parser import WorkHTMLParser
 from prof.init import baseurl, prof_session
 
 

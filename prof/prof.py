@@ -1,6 +1,6 @@
 import getpass
 from prof.init import initiate_session
-from prof.field_html_parser import FieldHTMLParser
+from prof.parsers.field_html_parser import FieldHTMLParser
 from os import environ
 
 
