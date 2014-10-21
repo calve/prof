@@ -4,6 +4,7 @@ from os import environ
 from init import initiate_session
 from parsers.field_html_parser import FieldHTMLParser
 from work import get_work, all_works
+from make import archive_compile
 
 
 def credentials(login=None):
@@ -41,7 +42,7 @@ def print_fields(fields, sort_by_date=False):
             print(str(work))
 
 
-def send_work(fields, work_id=None, filename=None):
+def send_work(fields, work_id=None, filename=None, command="make"):
     """Ask user for a file to send to a work"""
     while 1:
         if not work_id:
@@ -59,7 +60,17 @@ def send_work(fields, work_id=None, filename=None):
             filename = input("filename? ")
         while 1:
             try:
+                if command:
+                    if not archive_compile(filename, command):
+                        print("Compilation failed")
+                        send = input("Send anyway [y/N] ")
+                        if send == "y":
+                            break
+                        else:
+                            exit(1)
+                            return
                 work.upload(filename)
+                print("Uplodaed, but should verify it on the website")
                 return
             except FileNotFoundError:
                 print("{0} not found in current dir".format(filename))
@@ -72,6 +83,13 @@ def main():
     argument_parser.add_argument('-i', '--id', help='The project id to upload your file to', type=int)
     argument_parser.add_argument('--sorted', help='Sort project by due dates', action="store_true")
     argument_parser.add_argument('--login', help='Your prof login', type=str)
+    argument_parser.add_argument('--compil-command',
+                                 help='The command to use to check project. Defaults to "make"',
+                                 type=str,
+                                 default="make")
+    argument_parser.add_argument('--no-compil',
+                                 help='Disable compilation',
+                                 action="store_true")
     argument_parser.parse_args()
     arguments = argument_parser.parse_args()
 
@@ -85,8 +103,8 @@ def main():
     fields = parser.getFields()
 
     print_fields(fields, sort_by_date=arguments.sorted)
-    send_work(fields, work_id=arguments.id, filename=arguments.filename)
-    print("done, you should verify the upload on the website")
+    compilation_command = "" if arguments.no_compil else arguments.compil_command
+    send_work(fields, work_id=arguments.id, filename=arguments.filename, command=compilation_command)
 
 
 if __name__ == "__main__":

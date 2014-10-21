@@ -44,6 +44,14 @@ It ask for an id (you guessed it, the number printed in front of the work title)
     id? 95
     filename? test.tar.gz
 
+If the file is a ``tar.gz``, it will untar it in a temporary directory, and try to compile the project using ``make``. You can override this comportement with ``--compil-command "cmake"`` or ``--no-compile``
+
+    Running make in /tmp/tmp3n3knca6prof for file test.tar.gz
+    mkdir -p bin
+    gcc -Wall -ansi -pedantic -m32 -g   -c -o src/mkhd.o src/mkhd.c
+    gcc -Wall -ansi -pedantic -m32 -g -o ./lib/mkhd.o -c src/mkhd.c -I./include
+    Successfully compiled
+
 And it is done
 
     done, you should verify the upload on the website
@@ -91,6 +99,16 @@ Add this line to your ``~/.bashrc``
     export PROF_LOGIN=yourlogin
 
 prof will ask you if one of them is missing.
+
+## Set up a post commit hook for git
+
+You can easily setup a postcommit hook for git, so it compile and upload your work on each commit.
+In your project, create ``.git/post-commit``
+
+    git archive --output archive.tar.gz master
+    python3 /path/to/prof/prof/prof.py --filename archive.tar.gz --login yourlogin -i workid --compil-command "make"
+
+and ``chmod +x .git/post-commit``
 
 ## CHANGELOG
 
