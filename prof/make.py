@@ -6,7 +6,7 @@ import tempfile
 def archive_compile(filename, command="make"):
     """
     Returns if the given archive properly compile.
-    Extract it in a temporary directory, run make, return True if make returns 0
+    Extract it in a temporary directory, run the given command, and return True it's result is 0
     """
     if not tarfile.is_tarfile(filename):
         print("Cannot extract archive")
