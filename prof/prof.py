@@ -64,9 +64,7 @@ def send_work(fields, work_id=None, filename=None, command="make"):
                     if not archive_compile(filename, command):
                         print("Compilation failed")
                         send = input("Send anyway [y/N] ")
-                        if send == "y":
-                            break
-                        else:
+                        if send != "y":
                             exit(1)
                             return
                 work.upload(filename)
