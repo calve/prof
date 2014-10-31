@@ -1,7 +1,7 @@
 prof
 ====
 
-### An useful program to upload your work on PROF
+### Upload your work from the command line !
 
 [PROF] is the website where peoples studying computer science at Lille1 should upload their work.
 
@@ -112,6 +112,8 @@ and ``chmod +x .git/post-commit``
 
 ## CHANGELOG
 
+ - Check proper compilation before pushing
+ - ``--sorted`` option came back
  - Rewrite in Python
  - Better ui, now loop thru tp and ue list
  - Fix : Date comparaison
