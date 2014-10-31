@@ -97,7 +97,7 @@ def main():
     argument_parser.add_argument('--sorted', help='Sort project by due dates', action="store_true")
     argument_parser.add_argument('--login', help='Your prof login', type=str)
     argument_parser.add_argument('--compil-command',
-                                 help='The command to use to check project. Defaults to "make"',
+                                 help='The command runned to check project. Defaults to "make"',
                                  type=str,
                                  default="make")
     argument_parser.add_argument('--no-compil',
