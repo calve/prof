@@ -17,10 +17,16 @@ def credentials(login=None):
         login = environ.get("PROF_LOGIN")
     password = environ.get("PROF_PASSWORD")
     if not login:
-        login = input("login? ")
-        print("\t\tDon't get prompted everytime. Store your login in the PROF_LOGIN environment variable")
+        try:
+            login = input("login? ")
+            print("\t\tDon't get prompted everytime. Store your login in the PROF_LOGIN environment variable")
+        except KeyboardInterrupt:
+            exit(0)
     if not password:
-        password = getpass.getpass("pass? ")
+        try:
+            password = getpass.getpass("pass? ")
+        except KeyboardInterrupt:
+            exit(0)
     return (login, password)
 
 
@@ -46,7 +52,10 @@ def send_work(fields, work_id=None, filename=None, command="make"):
     """Ask user for a file to send to a work"""
     while 1:
         if not work_id:
-            work_id = input("id? ")
+            try:
+                work_id = input("id? ")
+            except KeyboardInterrupt:
+                exit(0)
         work = get_work(work_id)
         if not work:
             print("id '{0}' not found".format(work_id))
@@ -57,13 +66,19 @@ def send_work(fields, work_id=None, filename=None, command="make"):
             work_id = None
             continue
         if not filename:
-            filename = input("filename? ")
+            try:
+                filename = input("filename? ")
+            except KeyboardInterrupt:
+                exit(0)
         while 1:
             try:
                 if command:
                     if not archive_compile(filename, command):
                         print("Compilation failed")
-                        send = input("Send anyway [y/N] ")
+                        try:
+                            send = input("Send anyway [y/N] ")
+                        except KeyboardInterrupt:
+                            exit(0)
                         if send != "y":
                             exit(1)
                             return
