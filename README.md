@@ -93,6 +93,10 @@ To get a usable global command, add to your ``~/.bashrc`` file
 
     alias prof=python3 /path/to/prof/prof/prof.py``
 
+Alternatively, create a ``prof`` file somewhere in your ``$PATH`` containing
+
+    python3 ~/path/to/prof/prof/prof.py "$@"
+
 If you do not want to get prompted everytime for your credentials, put them in environments variables ``PROF_LOGIN`` and/or ``PROF_PASSWORD``.
 Add this line to your ``~/.bashrc``
 
