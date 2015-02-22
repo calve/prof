@@ -1,5 +1,5 @@
 cookie
-*.cmi
-*.cmo
-prof
+*.pyc
 samples/
+build/
+dist/
