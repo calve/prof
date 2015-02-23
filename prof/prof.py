@@ -29,13 +29,12 @@ def credentials(login=None):
             exit(0)
     return (login, password)
 
-
-def print_fields(fields, sort_by_date=False):
+def print_fields(fields, sort_by_date=False, sort_by_open_projects=False):
     """
     Print a list of available fields and works
     sort_by_date : boolean whether we print works by their due date
     """
-    if not sort_by_date:
+    if (not sort_by_date) and (not sort_by_open_projects):
         for (_, name, works) in fields:
             print(name)
             for work in works:
@@ -43,8 +42,12 @@ def print_fields(fields, sort_by_date=False):
     else:
         works = all_works
         # Sort works by due_date
-        works.sort(key=lambda x: (not x.is_open, x.due_date), reverse=True)
+        if sort_by_date:
+            works.sort(key=lambda x: (not x.is_open, x.due_date), reverse=True)
         for work in works:
+            if sort_by_open_projects:
+                if not work.is_open:
+                    continue
             print(str(work))
 
 
@@ -62,7 +65,7 @@ def send_work(fields, work_id=None, filename=None, command="make"):
             work_id = None
             continue
         if not work.is_open:  # Verify it is open
-            print("{0} is closed for upload".format(work.title))
+            print("\"It's too late baby...\" (Arnold Schwarzenegger)".format(work.title))
             work_id = None
             continue
         if not filename:
@@ -95,6 +98,7 @@ def main():
     argument_parser.add_argument('-f', '--filename', help='The name of the file to send to prof')
     argument_parser.add_argument('-i', '--id', help='The project id to upload your file to', type=int)
     argument_parser.add_argument('--sorted', help='Sort project by due dates', action="store_true")
+    argument_parser.add_argument('-o', '--display-open-projects', help='Only display open projects', action="store_true")
     argument_parser.add_argument('--login', help='Your prof login', type=str)
     argument_parser.add_argument('--compil-command',
                                  help='The command runned to check project. Defaults to "make"',
@@ -115,7 +119,7 @@ def main():
     parser.feed(fields_html.content.decode("iso-8859-1"))
     fields = parser.getFields()
 
-    print_fields(fields, sort_by_date=arguments.sorted)
+    print_fields(fields, sort_by_date=arguments.sorted, sort_by_open_projects=arguments.display_open_projects)
     compilation_command = "" if arguments.no_compil else arguments.compil_command
     send_work(fields, work_id=arguments.id, filename=arguments.filename, command=compilation_command)
 

@@ -136,6 +136,7 @@ and ``chmod +x .git/post-commit``
 
   - Improve ui and cli
   - Validate archive before upload
+  - Get informations about a repo (the administrator, ...)
 
 ## CONTACT
 
