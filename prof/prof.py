@@ -65,7 +65,7 @@ def send_work(fields, work_id=None, filename=None, command="make"):
             work_id = None
             continue
         if not work.is_open:  # Verify it is open
-            print("\"It's too late baby...\" (Arnold Schwarzenegger)".format(work.title))
+            print('"It\'s too late for {0} baby..." (Arnold Schwarzenegger)'.format(work.title))
             work_id = None
             continue
         if not filename:
