@@ -29,6 +29,7 @@ def credentials(login=None):
             exit(0)
     return (login, password)
 
+
 def print_fields(fields, sort_by_date=False, sort_by_open_projects=False):
     """
     Print a list of available fields and works
