@@ -5,10 +5,11 @@
 # usage : ./prof.sh [archive.tar.gz]
 
 baseurl="https://prof.fil.univ-lille1.fr/"
-login=login
+echo -n "Username: "
+read -r login
 
 #On récupère le mot de passe
-echo -n Password: 
+echo -n "Password: "
 read -s -r passwd
 echo
 
