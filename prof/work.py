@@ -1,6 +1,6 @@
 import re
 import datetime
-from session import prof_session, baseurl
+from prof.session import prof_session, baseurl
 
 value_re = re.compile('(\d+)')
 date_format = "%d/%m/%y-%H:%M"

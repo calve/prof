@@ -1,10 +1,10 @@
 import argparse
 import getpass
 from os import environ
-from session import initiate_session
-from parsers.field_html_parser import FieldHTMLParser
-from work import get_work, all_works
-from make import archive_compile
+from prof.session import initiate_session
+from prof.parsers.field_html_parser import FieldHTMLParser
+from prof.work import get_work, all_works
+from prof.make import archive_compile
 
 
 def credentials(login=None):

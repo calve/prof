@@ -20,7 +20,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'prof=prof.prof:main',
+            'prof=prof.main:main',
         ],
     }
 )

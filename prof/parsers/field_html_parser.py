@@ -1,6 +1,6 @@
 from html.parser import HTMLParser
-from parsers.work_html_parser import WorkHTMLParser
-from session import baseurl, prof_session
+from prof.parsers.work_html_parser import WorkHTMLParser
+from prof.session import baseurl, prof_session
 
 
 class FieldHTMLParser(HTMLParser):
