@@ -10,10 +10,10 @@ login=""
 
 if [ "$PROF_LOGIN" == "" ]
 then
-	echo -n "Username: "
-	read -r login
+        echo -n "Username: "
+        read -r login
 else
-	login=$PROF_LOGIN
+        login=$PROF_LOGIN
 fi
 
 #On récupère le mot de passe
