@@ -7,16 +7,17 @@ prof
 
 This tool give you ability to upload your archive from the command line.
 
-Download the source and run the program
+Download from Pypi and run the program
 
-    git clone https://github.com/calve/prof.git
-    cd prof
-    python3 prof/prof.py
+    sudo pip install prof
+    prof
+
 
 First you give your credentials
 
     login? calve
     pass?
+
 
 In exchange, it give you the tree of all avalaible works.
 
@@ -61,41 +62,8 @@ Always check your file is actually send on the remote server.
 
 [PROF]: https://prof.fil.univ-lille1.fr
 
-## Fast setup
-
-    sudo apt-get install python3-pip
-
-Or whatever your package manager is and how it named ``pip`` for python3
-
-    sudo pip3 install requests
-    git clone https://github.com/calve/prof.git
-    cd prof
-    python3 prof/prof.py
-
-## Download & Execute
-
-To download latests source and run the software
-
-    git clone https://github.com/calve/prof.git
-    cd prof
-    python3 prof/prof.py
-
-## Requirements
-
- * python3
- * python3-requests
-
-You can get requests with ``sudo pip install requests``
 
 ## Configuration
-
-To get a usable global command, add to your ``~/.bashrc`` file
-
-    alias prof=python3 /path/to/prof/prof/prof.py``
-
-Alternatively, create a ``prof`` file somewhere in your ``$PATH`` containing
-
-    python3 ~/path/to/prof/prof/prof.py "$@"
 
 If you do not want to get prompted everytime for your credentials, put them in environments variables ``PROF_LOGIN`` and/or ``PROF_PASSWORD``.
 Add this line to your ``~/.bashrc``
@@ -116,6 +84,7 @@ and ``chmod +x .git/post-commit``
 
 ## CHANGELOG
 
+ - True Pypi package
  - Check proper compilation before pushing
  - ``--sorted`` option came back
  - Rewrite in Python
@@ -135,7 +104,6 @@ and ``chmod +x .git/post-commit``
 ## TODO
 
   - Improve ui and cli
-  - Validate archive before upload
   - Get informations about a repo (the administrator, ...)
 
 ## CONTACT
