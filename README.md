@@ -78,7 +78,7 @@ You can easily setup a postcommit hook for git, so it compile and upload your wo
 In your project, create ``.git/post-commit``
 
     git archive --output archive.tar.gz master
-    python3 /path/to/prof/prof/prof.py --filename archive.tar.gz --login yourlogin -i workid --compil-command "make"
+    prof --filename archive.tar.gz --login yourlogin -i workid --compil-command "make"
 
 and ``chmod +x .git/post-commit``
 
