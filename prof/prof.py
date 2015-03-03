@@ -1,7 +1,7 @@
 import argparse
 import getpass
 from os import environ
-from init import initiate_session
+from session import initiate_session
 from parsers.field_html_parser import FieldHTMLParser
 from work import get_work, all_works
 from make import archive_compile
