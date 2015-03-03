@@ -1,9 +1,9 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 setup(
     name='prof',
-    packages=['prof'],
     version='1.0',
+    packages=find_packages(),
     description='A tool to upload student work to http://prof.fil.univ-lille1.fr',
     author='calve',
     author_email='calvinh34@gmail.com',
@@ -20,7 +20,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'prof=prof:main',
+            'prof=prof.prof:main',
         ],
     }
 )
