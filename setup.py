@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='prof',
-    version='1.0',
+    version='1.0.0',
     packages=find_packages(),
     description='A tool to upload student work to http://prof.fil.univ-lille1.fr',
     author='calve',
