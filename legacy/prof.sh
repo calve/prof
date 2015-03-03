@@ -1,7 +1,7 @@
 ## Script pour envoyé un fichier sur prof
 # CC0 No rights reserved
 
-# remplacez login par votre nom d'utilisateur
+# Add ``export PROF_LOGIN=loginname`` to your ``~/.bashrc``
 # usage : ./prof.sh [archive.tar.gz]
 
 baseurl="https://prof.fil.univ-lille1.fr/"
