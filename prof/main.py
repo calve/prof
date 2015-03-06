@@ -14,9 +14,6 @@ def credentials(login=None):
     We will ask user if we cannot find any in arguments nor environment
     """
     if not login:
-        login = environ.get("PROF_LOGIN")
-    password = environ.get("PROF_PASSWORD")
-    if not login:
         try:
             login = input("login? ")
             print("\t\tDon't get prompted everytime. Store your login in the PROF_LOGIN environment variable")
