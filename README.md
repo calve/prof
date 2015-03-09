@@ -78,15 +78,6 @@ Always check your file is actually send on the remote server.
 [PROF]: https://prof.fil.univ-lille1.fr
 
 
-## Configuration
-
-If you do not want to get prompted everytime for your credentials, put them in environments variables ``PROF_LOGIN`` and/or ``PROF_PASSWORD``.
-Add this line to your ``~/.bashrc``
-
-    export PROF_LOGIN=yourlogin
-
-prof will ask you if one of them is missing.
-
 ## Set up a post commit hook for git
 
 You can easily setup a postcommit hook for git, so it compile and upload your work on each commit.
