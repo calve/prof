@@ -1,17 +1,32 @@
-prof
-====
-
-### Upload your work from the command line !
+prof : Upload your work from the command line !
+===============================================
 
 [PROF] is the website where peoples studying computer science at Lille1 should upload their work.
 
 This tool give you ability to upload your archive from the command line.
+
+## Installation
+
+## On your university account
+
+You can install prof to your ``$HOME`` directory
+
+    export HTTP_PROXY=cache-etu.univ-lille1.fr:3128
+    pip-3.2 install --user prof
+    ~/.local/bin/prof
+
+I suggest you to create the following alias in your ``.bashrc``
+
+    alias prof=HTTP_PROXY=cache-etu.univ-lille1.fr:3128 $HOME/.local/bin/prof
+
+### On your computer (if your root)
 
 Download from Pypi and run the program
 
     sudo pip install prof
     prof
 
+## Usage
 
 First you give your credentials
 
