@@ -1,6 +1,6 @@
 import re
 import datetime
-from prof.session import prof_session, baseurl
+from prof.session import prof_session
 
 value_re = re.compile('(\d+)')
 date_format = "%d/%m/%y-%H:%M"
@@ -55,7 +55,7 @@ class Work:
             # Then [1:-1] will remove the first and last letter of the resulting string
             self.filename = html[4].split()[2][1:-1]
 
-    def upload(self, filename):
+    def upload(self, baseurl, filename):
         """Upload filename to this work"""
         # Prof is really dirty, we need to re-get the project page before upload
         payload = {

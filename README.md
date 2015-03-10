@@ -26,13 +26,25 @@ Download from Pypi and run the program
     sudo pip3 install prof
     prof
 
+## Configuration
+
+You *must* specify to which server ``prof`` need to connect in ``$HOME/.profrc``, as the following :
+
+    [DEFAULT]
+    baseurl = https://your-prof-instance
+    login = yourlogin
+
+Note that ``login`` is not mandatory, but you should set it for convenience.
+
 ## Usage
 
-First you give your credentials
+On the command line, run
 
-    login? calve
-    pass?
+    prof
 
+Then you give your password
+
+    pass for yourlogin ?
 
 In exchange, it give you the tree of all avalaible works.
 
@@ -77,16 +89,6 @@ Always check your file is actually send on the remote server.
 
 [PROF]: https://prof.fil.univ-lille1.fr
 
-
-## Configuration
-
-If you do not want to get prompted everytime for your credentials, put them in environments variables ``PROF_LOGIN`` and/or ``PROF_PASSWORD``.
-Add this line to your ``~/.bashrc``
-
-    export PROF_LOGIN=yourlogin
-
-prof will ask you if one of them is missing.
-
 ## Set up a post commit hook for git
 
 You can easily setup a postcommit hook for git, so it compile and upload your work on each commit.
@@ -99,6 +101,7 @@ and ``chmod +x .git/post-commit``
 
 ## CHANGELOG
 
+ - Persisting sessions
  - True Pypi package
  - Check proper compilation before pushing
  - ``--sorted`` option came back

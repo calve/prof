@@ -1,33 +1,9 @@
 import argparse
-import getpass
-from os import environ
-from prof.session import baseurl, initiate_session
+from prof.session import initiate_session
 from prof.parsers.field_html_parser import FieldHTMLParser
 from prof.work import get_work, all_works
 from prof.make import archive_compile
-
-
-def credentials(login=None):
-    """
-    Find user credentials. We should have parsed the command line for a ``--login`` option.
-    We will try to find credentials in environment variables.
-    We will ask user if we cannot find any in arguments nor environment
-    """
-    if not login:
-        login = environ.get("PROF_LOGIN")
-    password = environ.get("PROF_PASSWORD")
-    if not login:
-        try:
-            login = input("login? ")
-            print("\t\tDon't get prompted everytime. Store your login in the PROF_LOGIN environment variable")
-        except KeyboardInterrupt:
-            exit(0)
-    if not password:
-        try:
-            password = getpass.getpass("pass? ")
-        except KeyboardInterrupt:
-            exit(0)
-    return (login, password)
+from prof.config import read_config
 
 
 def print_fields(fields, sort_by_date=False, sort_by_open_projects=False):
@@ -52,7 +28,7 @@ def print_fields(fields, sort_by_date=False, sort_by_open_projects=False):
             print(str(work))
 
 
-def send_work(fields, work_id=None, filename=None, command="make"):
+def send_work(fields, baseurl, work_id=None, filename=None, command="make"):
     """Ask user for a file to send to a work"""
     while 1:
         if not work_id:
@@ -86,7 +62,7 @@ def send_work(fields, work_id=None, filename=None, command="make"):
                         if send != "y":
                             exit(1)
                             return
-                work.upload(filename)
+                work.upload(baseurl, filename)
                 print("Uplodaed, but should verify it on the website")
                 return
             except FileNotFoundError:
@@ -111,9 +87,11 @@ def main():
     argument_parser.parse_args()
     arguments = argument_parser.parse_args()
 
+    config = read_config()
+    baseurl = config['DEFAULT']['baseurl']
+
     # The actual progression through the website
-    (login, password) = credentials(login=arguments.login)
-    prof_session = initiate_session(login, password)
+    prof_session = initiate_session(config)
     fields_html = prof_session.post(baseurl+"/select_projet.php")
     # Parse the project page, and extra available fields
     parser = FieldHTMLParser()
@@ -122,7 +100,7 @@ def main():
 
     print_fields(fields, sort_by_date=arguments.sorted, sort_by_open_projects=arguments.display_open_projects)
     compilation_command = "" if arguments.no_compil else arguments.compil_command
-    send_work(fields, work_id=arguments.id, filename=arguments.filename, command=compilation_command)
+    send_work(fields, baseurl, work_id=arguments.id, filename=arguments.filename, command=compilation_command)
 
 
 if __name__ == "__main__":
