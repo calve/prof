@@ -23,7 +23,7 @@ I suggest you to create the following alias in your ``.bashrc``
 
 Download from Pypi and run the program
 
-    sudo pip install prof
+    sudo pip3 install prof
     prof
 
 ## Usage
