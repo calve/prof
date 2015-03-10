@@ -18,6 +18,11 @@ def initiate_session(config):
     """
     global baseurl
     baseurl = config['DEFAULT']['baseurl']
+    if 'session' in config['DEFAULT']:
+        cookies = {
+            'PHPSESSID': config['DEFAULT']['session']
+        }
+        prof_session.cookies = requests.utils.cookiejar_from_dict(cookies)
     try:
         valid = verify_session(prof_session, baseurl)
         if not valid:
