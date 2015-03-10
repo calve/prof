@@ -1,7 +1,7 @@
 import argparse
 import getpass
 from os import environ
-from prof.session import initiate_session
+from prof.session import baseurl, initiate_session
 from prof.parsers.field_html_parser import FieldHTMLParser
 from prof.work import get_work, all_works
 from prof.make import archive_compile
@@ -113,8 +113,8 @@ def main():
 
     # The actual progression through the website
     (login, password) = credentials(login=arguments.login)
-    fields_html = initiate_session(login, password)
-
+    prof_session = initiate_session(login, password)
+    fields_html = prof_session.post(baseurl+"/select_projet.php")
     # Parse the project page, and extra available fields
     parser = FieldHTMLParser()
     parser.feed(fields_html.content.decode("iso-8859-1"))
