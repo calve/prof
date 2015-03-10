@@ -116,10 +116,11 @@ and ``chmod +x .git/post-commit``
  - retrieve TP list
  - connect to the prof website, get cookie, log and retrieve an UE list
 
-## TODO
+## Development
 
-  - Improve ui and cli
-  - Get informations about a repo (the administrator, ...)
+    git clone https://github.com/calve/prof
+    cd prof
+    python3 run.py
 
 ## CONTACT
 
