@@ -2,9 +2,14 @@ import getpass
 import requests
 import urllib
 from os import environ
+from prof.version import __version__
 
 baseurl = None
+headers = {
+    'User-Agent': 'profclient/{version}'.format(version=__version__)
+}
 prof_session = requests.Session()
+prof_session.headers = headers
 VERIFY_SESSION_STRING = "Selection du projet"  # String used to verify a session validity
 
 
