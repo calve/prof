@@ -3,6 +3,7 @@ import requests
 import sys
 from os import path
 
+
 def read_config():
     """
     Read a config file from ``$HOME/.profrc``
