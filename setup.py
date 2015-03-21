@@ -1,8 +1,10 @@
 from setuptools import setup, find_packages
 
+exec(open('prof/version.py').read())
+
 setup(
     name='prof',
-    version='1.0.0',
+    version=__version__,
     packages=find_packages(),
     description='A tool to upload student work to http://prof.fil.univ-lille1.fr',
     author='calve',

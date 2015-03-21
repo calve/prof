@@ -4,6 +4,7 @@ from prof.parsers.field_html_parser import FieldHTMLParser
 from prof.work import get_work, all_works
 from prof.make import archive_compile
 from prof.config import read_config
+from prof.tools import check_update
 
 
 def print_fields(fields, sort_by_date=False, sort_by_open_projects=False):
@@ -86,6 +87,9 @@ def main():
                                  action="store_true")
     argument_parser.parse_args()
     arguments = argument_parser.parse_args()
+
+    if check_update():
+        print("An update is available. You should ``pip install --upgrade prof``")
 
     config = read_config()
     baseurl = config['DEFAULT']['baseurl']
