@@ -68,8 +68,17 @@ def get_session(session, baseurl, config):
         })
     else:
         proxy = None
+
+    if 'login' in config['DEFAULT']:
+        login, password = credentials(config['DEFAULT']['login'])
+    else:
+        login, password = credentials()
+
     browser = webdriver.Firefox(proxy=proxy)
     browser.get(baseurl)
+    browser.find_element_by_name('login').send_keys(login)
+    browser.find_element_by_name('passwd').send_keys(password)
+
     cookie = {'PHPSESSID': browser.get_cookie('PHPSESSID')['value']}
     prof_session.cookies = requests.utils.cookiejar_from_dict(cookie)
     print("Please log using firefox")
