@@ -4,6 +4,7 @@ from selenium import webdriver
 from os import environ
 from time import sleep
 from prof.version import __version__
+from prof.config import set_sessid
 from selenium.webdriver.common.proxy import Proxy, ProxyType
 
 
@@ -77,6 +78,7 @@ def get_session(session, baseurl, config):
         except:
             sleep(0.5)
     browser.close()
+    set_sessid(cookie['PHPSESSID'])
     if not verify_session(session, baseurl):
         print("Cannot get a valid session, retry")
         get_session(session, baseurl, {'DEFAULT': {}})
