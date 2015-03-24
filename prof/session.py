@@ -1,8 +1,11 @@
 import getpass
 import requests
-import urllib
+from selenium import webdriver
 from os import environ
+from time import sleep
 from prof.version import __version__
+from selenium.webdriver.common.proxy import Proxy, ProxyType
+
 
 baseurl = None
 headers = {
@@ -51,18 +54,29 @@ def get_session(session, baseurl, config):
     """
     Try to get a valid session for this baseurl, using login found in config.
     """
-    login, password = None, None
-    if 'login' in config['DEFAULT']:
-        login, password = credentials(config['DEFAULT']['login'])
+    if environ.get("HTTPS_PROXY"):
+        myProxy = environ.get("HTTPS_PROXY")
+        proxy = Proxy({
+            'proxyType': ProxyType.MANUAL,
+            'httpProxy': myProxy,
+            'ftpProxy': myProxy,
+            'sslProxy': myProxy,
+            'noProxy': ''  # set this value as desired
+        })
     else:
-        login, password = credentials()
-    prof_session.get(baseurl+"/index.php")
-    payload = {
-        'login': login,
-        'passwd': urllib.parse.quote_plus(password),
-        '++O+K++': 'Valider'
-    }
-    prof_session.post(baseurl+"/login.php", params=payload)
+        proxy = None
+    browser = webdriver.Firefox(proxy=proxy)
+    browser.get(baseurl)
+    cookie = {'PHPSESSID': browser.get_cookie('PHPSESSID')['value']}
+    prof_session.cookies = requests.utils.cookiejar_from_dict(cookie)
+    print("Please log using firefox")
+    while True:
+        try:
+            browser.find_element_by_css_selector("select")
+            break
+        except:
+            sleep(0.5)
+    browser.close()
     if not verify_session(session, baseurl):
         print("Cannot get a valid session, retry")
         get_session(session, baseurl, {'DEFAULT': {}})

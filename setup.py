@@ -19,6 +19,7 @@ setup(
     ],
     install_requires=[
         "requests",
+        "selenium",
     ],
     entry_points={
         'console_scripts': [
