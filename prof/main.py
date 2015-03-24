@@ -5,6 +5,7 @@ from prof.work import get_work, all_works
 from prof.make import archive_compile
 from prof.config import read_config
 from prof.tools import check_update
+from prof.version import __version__
 
 
 def print_fields(fields, sort_by_date=False, sort_by_open_projects=False):
@@ -78,6 +79,7 @@ def main():
     argument_parser.add_argument('--sorted', help='Sort project by due dates', action="store_true")
     argument_parser.add_argument('-o', '--display-open-projects', help='Only display open projects', action="store_true")
     argument_parser.add_argument('--login', help='Your prof login', type=str)
+    argument_parser.add_argument('--version', help='Print the current version', action="store_true")
     argument_parser.add_argument('--compil-command',
                                  help='The command runned to check project. Defaults to "make"',
                                  type=str,
@@ -87,6 +89,10 @@ def main():
                                  action="store_true")
     argument_parser.parse_args()
     arguments = argument_parser.parse_args()
+
+    if arguments.version:
+        print("prof {version}".format(version=__version__))
+        return
 
     if check_update():
         print("An update is available. You should ``pip install --upgrade prof``")
