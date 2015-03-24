@@ -42,9 +42,7 @@ On the command line, run
 
     prof
 
-Then you give your password
-
-    pass for yourlogin ?
+If needed, a Firefox windows will pop so you can fill your credentials, and check the captcha.
 
 In exchange, it give you the tree of all avalaible works.
 
