@@ -56,9 +56,9 @@ def get_session(session, baseurl, config):
     Try to get a valid session for this baseurl, using login found in config.
     This function invoques Firefox if necessary
     """
-    if environ.get("HTTPS_PROXY"):
-        myProxy = environ.get("HTTPS_PROXY")
     # Read proxy for firefox
+    if environ.get("HTTP_PROXY"):
+        myProxy = environ.get("HTTP_PROXY")
         proxy = Proxy({
             'proxyType': ProxyType.MANUAL,
             'httpProxy': myProxy,
