@@ -90,12 +90,12 @@ Always check your file is actually send on the remote server.
 ## Set up a post commit hook for git
 
 You can easily setup a postcommit hook for git, so it compile and upload your work on each commit.
-In your project, create ``.git/post-commit``
+In your project, create ``.git/hooks/post-commit``
 
-    git archive --output archive.tar.gz master
-    prof --filename archive.tar.gz --login yourlogin -i workid --compil-command "make"
+    git archive --output archive.tar.gz HEAD
+    prof --filename archive.tar.gz -i workid --compil-command "make"
 
-and ``chmod +x .git/post-commit``
+and ``chmod +x .git/hooks/post-commit``
 
 ## CHANGELOG
 
