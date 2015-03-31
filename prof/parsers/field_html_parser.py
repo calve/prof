@@ -1,49 +1,31 @@
-from html.parser import HTMLParser
-from prof.parsers.work_html_parser import WorkHTMLParser
-from prof.session import get_baseurl, prof_session
 from bs4 import BeautifulSoup
+from prof.parsers.work_html_parser import WorkHTMLParser
+from prof.session import prof_session
 
 
-class FieldHTMLParser(HTMLParser):
+class FieldHTMLParser():
     """
-    A state machine to find the fields and work from prof
-    It except a raw HTML string, and will try to extract sensible informations inside <OPTION> tags
-    It also call the field page to retrieve the list of Works.
-
-    This class mostly override methods of HTMLParser
+    An html parser to discover all projects, and retreive their work lists
     """
-    state = None
-    current_attributes = []
-    options = []
+    all_fields = []
 
-    def handle_starttag(self, tag, attrs):
-        self.state = tag
-        self.current_attributes = attrs  # May be used in handle_data
-
-    def handle_data(self, data):
-        """
-        This method is called each time the parser encounter an opening HTML tag.
-        At the moment, we are only interested in <option> tags.
-        """
-        if self.state == "option" and "".join(data.split()) is not '':
-            # Got one
-            _, value = self.current_attributes[0]
-
-            # Retrive its works list
-            payload = {'id_projet': value}
-            work_html = prof_session.post(get_baseurl()+"/main.php", params=payload)
-            soup = BeautifulSoup(work_html.content.decode("iso-8859-1"))
-            workParser = WorkHTMLParser(value)
-            workParser.feed(soup.prettify())
-            workList = workParser.getWorks()
-
-            # And finally save our findings
-            current_tp = (value, data, workList)
-            self.options.append(current_tp)
-
-    def handle_endtag(self, tag):
-        if self.state == "option":
-            self.current_attributes = None
+    def __init__(self, baseurl):
+        raw_html = prof_session.post(baseurl+"/select_projet.php")
+        self.soup = BeautifulSoup(raw_html.content.decode("iso-8859-1"))
+        self.baseurl = baseurl
 
     def getFields(self):
-        return self.options
+        raw_fields = self.soup.find_all('option')
+        for field in raw_fields:
+            field_id = field['value']
+            data = field.text
+            works = self.field_details(field_id)
+            current_tp = (field_id, data, works)
+            self.all_fields.append(current_tp)
+        return self.all_fields
+
+    def field_details(self, field_id):
+        # Retrive its works list
+        workParser = WorkHTMLParser(self.baseurl, field_id)
+        works = workParser.getWorks()
+        return works

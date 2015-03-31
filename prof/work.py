@@ -1,26 +1,28 @@
-import re
 import datetime
 from prof.session import prof_session
 
-value_re = re.compile('(\d+)')
-date_format = "%d/%m/%y-%H:%M"
 all_works = []  # A list containing all the parsed Works
 
 
 class Work:
-    def __init__(self, title=""):
+    def __init__(self, title=None, field=None, work_id=None, is_open=False,
+                 due_date=None, opening_date=None, send_date=None, filename=None):
+        """
+        Instanciate a Work with a bunch of parameters
+        """
         self.title = title
-        self.value = 0
-        self.is_open = False
-        self.field = 0
-        self.due_date = 0
-        self.opening_date = 0
-        self.filename = None
+        self.field = field
+        self.work_id = work_id
+        self.is_open = is_open
+        self.due_date = due_date
+        self.opening_date = opening_date
+        self.send_date = send_date
+        self.filename = filename
         all_works.append(self)
 
     def __str__(self):
         string = "{0} : {1}{2}\t{3}".format(
-            str(self.value).ljust(3),  # Pad with space so the string is at least 3 characters long
+            str(self.work_id).ljust(3),  # Pad with space so the string is at least 3 characters long
             self.title.ljust(30),
             self.verify_open(),
             "("+self.filename+")" if self.filename else "",
@@ -28,33 +30,7 @@ class Work:
         return string
 
     def __repr__(self):
-        return "{0}({1})".format(self.title, self.value)
-
-    def parse(self, html, field=0, attributes=None):
-        """
-        Get a list of data from a work_html_parser and try to find metadatas.
-        field : id of the parent field
-        attributes : list of extra href attribute to determine this id
-        """
-        # Parse this work id
-        _, href = attributes[0][0]
-        value = value_re.search(href)
-
-        if 'Ouvert' in html:
-            self.is_open = True
-
-        self.field = field.strip()
-        self.value = int(value.group())
-        self.title = html[0].strip()
-        self.opening_date = datetime.datetime.strptime("".join(html[1].split()), date_format)
-        self.due_date = datetime.datetime.strptime("".join(html[2].split()), date_format)
-
-        uploaded = html[4].strip()
-        if uploaded != 'Non':
-            # html[4] looks like ``Le 06/10/14-19:06 (test.tar.gz)``
-            # We will first split on spaces
-            # Then [1:-1] will remove the first and last letter of the resulting string
-            self.filename = uploaded.split()[2][1:-1]
+        return "{0}({1})".format(self.title, self.work_id)
 
     def upload(self, baseurl, filename):
         """Upload filename to this work"""
@@ -65,7 +41,7 @@ class Work:
         prof_session.post(baseurl+"/main.php", params=payload)
         # We also need to get the upload page...
         payload = {
-            'id': int(self.value)
+            'id': int(self.work_id)
         }
         prof_session.get(baseurl+"/upload.php", params=payload)
         # Finally we can actually send
@@ -91,11 +67,11 @@ class Work:
         return self.due_date - datetime.datetime.now()
 
 
-def get_work(work_id):
+def get_work(target_id):
     """
     Find a work by it's id
     """
     for work in all_works:
-        if work.value == int(work_id):
+        if work.work_id == int(target_id):
             return work
     return None

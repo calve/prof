@@ -73,10 +73,8 @@ def send_work(baseurl, work_id=None, filename=None, command="make"):
 
 
 def command_list(arguments, baseurl, prof_session):
-    fields_html = prof_session.post(baseurl+"/select_projet.php")
     # Parse the project page, and extra available fields
-    parser = FieldHTMLParser()
-    parser.feed(fields_html.content.decode("iso-8859-1"))
+    parser = FieldHTMLParser(baseurl)
     fields = parser.getFields()
     print_fields(fields, sort_by_date=arguments.sorted, sort_by_open_projects=arguments.display_open_projects)
 

@@ -1,46 +1,52 @@
-from html.parser import HTMLParser
+from bs4 import BeautifulSoup
 from prof.work import Work
+from prof.session import prof_session
+import datetime
+import re
+
+value_reg = re.compile("id_echeance=(\d+)")
+date_format = "%d/%m/%y-%H:%M"
 
 
-class WorkHTMLParser(HTMLParser):
+class WorkHTMLParser():
     """
     A parser to find all opened, and closed work inside a field.
     It expects a raw HTML string represensing the body of a field page,
     and will try to extract the rows (html tags <tr>), and pass it the Work.parse method
     """
-    def __init__(self, field):
-        HTMLParser.__init__(self)
-        self.in_row = False
-        self.current_data = []
-        self.current_attributes = []
+    def __init__(self, baseurl, field_id):
+        payload = {'id_projet': field_id}
+        raw_html = prof_session.post(baseurl+"/main.php", params=payload)
+        self.soup = BeautifulSoup(raw_html.content.decode("iso-8859-1"))
         self.works = []
-        self.field = field
-
-    def handle_starttag(self, tag, attrs):
-        # Encourtered an opening tag
-        if tag == "tr":
-            if len(attrs) > 0 and attrs[0] == ('id', 'invert2'):
-                self.in_row = True
-                self.current_data = []
-                self.current_attributes = []
-        if self.in_row and tag == "a":
-            # We are already in a <tr> row, and we entered a new <a>, that might be interesting
-            self.current_attributes.append(attrs)
-
-    def handle_data(self, data):
-        """
-        Save all data, we will parse them on closing tag
-        """
-        if self.in_row is not None and not data.isspace():
-            self.current_data.append(data)
-
-    def handle_endtag(self, tag):
-        # Encourtered the </tr> closing tag, we should now parse the raw data we get
-        if tag == "tr" and self.in_row:
-            current_work = Work()
-            current_work.parse(self.current_data, self.field, self.current_attributes)
-            self.works.append(current_work)
-            self.in_row = False
+        self.field = field_id
 
     def getWorks(self):
+        raw_works = self.soup.find_all('tr', id='invert2')
+        for work in raw_works:
+            # first, get all ``<a>``
+            anchors = work.find_all('a')
+            # now find the value id inside the ``href`` of first ``<a>``
+            matches = re.search(value_reg, anchors[0]['href'])
+            value = matches.group(1)
+
+            is_open = 'Ouvert' in str(work)
+            title = anchors[0].text
+
+            tds = work.find_all('td')  # We store an array containing all ``<td>``
+
+            opening_date = datetime.datetime.strptime(tds[1].text, date_format)
+            due_date = datetime.datetime.strptime(tds[2].text, date_format)
+            send_date = None
+            filename = None
+
+            if tds[4].text != 'Non':
+                # tds[4].text looks like ``Le 06/10/14-19:06 (test.tar.gz)``
+                # We will first split on spaces
+                # Then [1:-1] will remove the first and last letter of the resulting string
+                filename = tds[4].text.split()[2][1:-1]
+                send_date = datetime.datetime.strptime(tds[4].text.split()[1], date_format)
+
+            current_work = Work(title, self.field, value, is_open, due_date, opening_date, send_date, filename)
+            self.works.append(current_work)
         return self.works
