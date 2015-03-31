@@ -27,7 +27,10 @@ def print_fields(fields, sort_by_date=False, sort_by_open_projects=False):
             if sort_by_open_projects:
                 if not work.is_open:
                     continue
-            print(str(work))
+            # This is ugly, but there is no way to know the field name of a work without searching for it, at the moment
+            field_name = [name for id, name, _ in fields if id == work.field][0]
+            print(field_name)
+            print('- '+str(work))
 
 
 def send_work(baseurl, work_id=None, filename=None, command="make"):
