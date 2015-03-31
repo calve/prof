@@ -121,6 +121,7 @@ and ``chmod +x .git/hooks/post-commit``
 
     git clone https://github.com/calve/prof
     cd prof
+    pip3 install -r requirements.txt
     python3 run.py
 
 ## CONTACT
