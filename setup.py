@@ -19,6 +19,7 @@ setup(
     ],
     install_requires=[
         "requests",
+        "beautifulsoup4",
         "selenium",
     ],
     entry_points={

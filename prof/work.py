@@ -43,17 +43,18 @@ class Work:
         if 'Ouvert' in html:
             self.is_open = True
 
-        self.field = field
+        self.field = field.strip()
         self.value = int(value.group())
-        self.title = html[0]
-        self.opening_date = datetime.datetime.strptime(html[1], date_format)
-        self.due_date = datetime.datetime.strptime(html[2], date_format)
+        self.title = html[0].strip()
+        self.opening_date = datetime.datetime.strptime("".join(html[1].split()), date_format)
+        self.due_date = datetime.datetime.strptime("".join(html[2].split()), date_format)
 
-        if html[4] != 'Non':
+        uploaded = html[4].strip()
+        if uploaded != 'Non':
             # html[4] looks like ``Le 06/10/14-19:06 (test.tar.gz)``
             # We will first split on spaces
             # Then [1:-1] will remove the first and last letter of the resulting string
-            self.filename = html[4].split()[2][1:-1]
+            self.filename = uploaded.split()[2][1:-1]
 
     def upload(self, baseurl, filename):
         """Upload filename to this work"""
