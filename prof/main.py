@@ -83,36 +83,76 @@ def command_list(arguments, baseurl, prof_session):
 
 
 def command_upload(arguments, baseurl, prof_session):
-    compilation_command = "" if arguments.no_compil else arguments.compil_command
-    send_work(baseurl, work_id=arguments.id, filename=arguments.filename, command=compilation_command)
+    compilation_command = None
+    if 'no_compil' in vars(arguments):
+        compilation_command = ""
+    elif 'compil_command' in vars(arguments):
+        compilation_command = arguments.compil_command
+    work_id = None
+    filename = None
+    if 'id' in vars(arguments):
+        work_id = arguments.id
+    if 'filename' in vars(arguments):
+        filename = arguments.filename
+    if compilation_command:
+        send_work(baseurl, work_id=work_id, filename=filename, command=compilation_command)
+    else:
+        send_work(baseurl, work_id=work_id, filename=filename)
 
 
 def main():
     argument_parser = argparse.ArgumentParser()
-    argument_parser.add_argument('--login', help='Your prof login', type=str)
-    argument_parser.add_argument('--version', help='Print the current version')
-    subparsers = argument_parser.add_subparsers(title='Actions', description="main actions")
+    argument_parser.add_argument('--login',
+                                 help='Your prof login',
+                                 type=str)
+    argument_parser.add_argument('--version',
+                                 help='Print the current version')
+    argument_parser.add_argument('-s', '--sorted',
+                                 help='Sort project by due dates',
+                                 action="store_true")
+    argument_parser.add_argument('-o', '--display-open-projects',
+                                 help='Only display open projects',
+                                 action="store_true")
+    group = argument_parser.add_mutually_exclusive_group()
+    group.add_argument('--compil-command',
+                       help='The command runned to check project. Defaults to "make"',
+                       type=str,
+                       default="make")
+    group.add_argument('--no-compil',
+                       help='Disable compilation',
+                       action="store_true",
+                       default=False)
+    subparsers = argument_parser.add_subparsers(title='Actions')
 
-    # The ``list`` command
+    # The ``list`` command, and specific options
     list_parser = subparsers.add_parser('list', help='List available works')
     list_parser.set_defaults(func=command_list)
-    list_parser.add_argument('-s', '--sorted', help='Sort project by due dates', action="store_true")
-    list_parser.add_argument('-o', '--display-open-projects', help='Only display open projects', action="store_true")
+    list_parser.add_argument('-s', '--sorted',
+                             help='Sort project by due dates',
+                             action="store_true")
+    list_parser.add_argument('-o', '--display-open-projects',
+                             help='Only display open projects',
+                             action="store_true")
 
-    # The ``upload`` command
+    # The ``upload`` command, and specific options
     upload_parser = subparsers.add_parser('upload', help='Upload a work')
     upload_parser.set_defaults(func=command_upload)
-    upload_parser.add_argument('filename', nargs="?", help='The name of the file to send to prof')
-    upload_parser.add_argument('-i', '--id', help='The project id to upload your file to', type=int)
-    upload_parser.add_argument('--compil-command',
-                               help='The command runned to check project. Defaults to "make"',
-                               type=str,
-                               default="make")
-    upload_parser.add_argument('--no-compil',
-                               help='Disable compilation',
-                               action="store_true")
+    upload_parser.add_argument('id',
+                               help='The project id to upload your file to',
+                               type=int)
+    upload_parser.add_argument('filename',
+                               help='The name of the file to send to prof')
+    group = upload_parser.add_mutually_exclusive_group()
+    group.add_argument('--compil-command',
+                       help='The command runned to check project. Defaults to "make"',
+                       type=str,
+                       default="make")
+    group.add_argument('--no-compil',
+                       help='Disable compilation',
+                       action="store_true",
+                       default=False)
 
-    argument_parser.parse_args()
+    # All parsers set !
     arguments = argument_parser.parse_args()
 
     if arguments.version:
@@ -127,10 +167,10 @@ def main():
 
     # The actual progression through the website
     prof_session = initiate_session(config)
-    if arguments.func:
+    try:
         arguments.func(arguments, baseurl, prof_session)
-    else:
-        # No option specified, should be interactive
+    except AttributeError:
+        # defaults to interactive
         command_list(arguments, baseurl, prof_session)
         command_upload(arguments, baseurl, prof_session)
 

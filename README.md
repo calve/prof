@@ -40,7 +40,7 @@ Note that ``login`` is not mandatory, but you should set it for convenience.
 
 On the command line, run
 
-    prof
+    prof list
 
 If needed, a Firefox windows will pop so you can fill your credentials, and check the captcha.
 
@@ -64,11 +64,9 @@ In exchange, it give you the tree of all avalaible works.
     - 95  : Bonus TD                      Closed
     - 184 : TP roulette                   Open - Time remaining: 5 days, 17:54:56.090157
 
+Then you can upload a file with
 
-It ask for an id (you guessed it, the number printed in front of the work title)
-
-    id? 95
-    filename? test.tar.gz
+    prof upload 184 test.tar.gz
 
 If the file is a ``tar.gz``, it will untar it in a temporary directory, and try to compile the project using ``make``. You can override this comportement with ``--compil-command "cmake"`` or ``--no-compile``
 
@@ -93,7 +91,7 @@ You can easily setup a postcommit hook for git, so it compile and upload your wo
 In your project, create ``.git/hooks/post-commit``
 
     git archive --output archive.tar.gz HEAD
-    prof upload archive.tar.gz --id workid --compil-command "make"
+    prof upload workid archive.tar.gz --compil-command "make"
 
 and ``chmod +x .git/hooks/post-commit``
 
