@@ -11,6 +11,8 @@ def archive_compile(filename, command="make"):
     if not tarfile.is_tarfile(filename):
         print("Cannot extract archive")
         return False
+    if command == "":
+        return True
     with tempfile.TemporaryDirectory(suffix="prof") as tmpdir:
         with tarfile.open(filename) as tararchive:
             tararchive.extractall(tmpdir)
@@ -18,7 +20,7 @@ def archive_compile(filename, command="make"):
             try:
                 os.chdir(tmpdir)
                 print("Running {} in {} for file {}".format(command, tmpdir, filename))
-                make = os.system("make")
+                make = os.system(command)
                 if make == 0:
                     print("Successfully compiled")
                     return True
