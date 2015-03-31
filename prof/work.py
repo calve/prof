@@ -12,7 +12,7 @@ class Work:
         """
         self.title = title
         self.field = field
-        self.work_id = work_id
+        self.work_id = int(work_id)
         self.is_open = is_open
         self.due_date = due_date
         self.opening_date = opening_date
