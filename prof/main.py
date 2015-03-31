@@ -30,7 +30,7 @@ def print_fields(fields, sort_by_date=False, sort_by_open_projects=False):
             print(str(work))
 
 
-def send_work(fields, baseurl, work_id=None, filename=None, command="make"):
+def send_work(baseurl, work_id=None, filename=None, command="make"):
     """Ask user for a file to send to a work"""
     while 1:
         if not work_id:
@@ -72,21 +72,45 @@ def send_work(fields, baseurl, work_id=None, filename=None, command="make"):
                 filename = None
 
 
+def command_list(arguments, baseurl, prof_session):
+    fields_html = prof_session.post(baseurl+"/select_projet.php")
+    # Parse the project page, and extra available fields
+    parser = FieldHTMLParser()
+    parser.feed(fields_html.content.decode("iso-8859-1"))
+    fields = parser.getFields()
+    print_fields(fields, sort_by_date=arguments.sorted, sort_by_open_projects=arguments.display_open_projects)
+
+
+def command_upload(arguments, baseurl, prof_session):
+    compilation_command = "" if arguments.no_compil else arguments.compil_command
+    send_work(baseurl, work_id=arguments.id, filename=arguments.filename, command=compilation_command)
+
+
 def main():
     argument_parser = argparse.ArgumentParser()
-    argument_parser.add_argument('-f', '--filename', help='The name of the file to send to prof')
-    argument_parser.add_argument('-i', '--id', help='The project id to upload your file to', type=int)
-    argument_parser.add_argument('--sorted', help='Sort project by due dates', action="store_true")
-    argument_parser.add_argument('-o', '--display-open-projects', help='Only display open projects', action="store_true")
     argument_parser.add_argument('--login', help='Your prof login', type=str)
-    argument_parser.add_argument('--version', help='Print the current version', action="store_true")
-    argument_parser.add_argument('--compil-command',
-                                 help='The command runned to check project. Defaults to "make"',
-                                 type=str,
-                                 default="make")
-    argument_parser.add_argument('--no-compil',
-                                 help='Disable compilation',
-                                 action="store_true")
+    argument_parser.add_argument('--version', help='Print the current version')
+    subparsers = argument_parser.add_subparsers(title='Actions', description="main actions")
+
+    # The ``list`` command
+    list_parser = subparsers.add_parser('list', help='List available works')
+    list_parser.set_defaults(func=command_list)
+    list_parser.add_argument('-s', '--sorted', help='Sort project by due dates', action="store_true")
+    list_parser.add_argument('-o', '--display-open-projects', help='Only display open projects', action="store_true")
+
+    # The ``upload`` command
+    upload_parser = subparsers.add_parser('upload', help='Upload a work')
+    upload_parser.set_defaults(func=command_upload)
+    upload_parser.add_argument('filename', nargs="?", help='The name of the file to send to prof')
+    upload_parser.add_argument('-i', '--id', help='The project id to upload your file to', type=int)
+    upload_parser.add_argument('--compil-command',
+                               help='The command runned to check project. Defaults to "make"',
+                               type=str,
+                               default="make")
+    upload_parser.add_argument('--no-compil',
+                               help='Disable compilation',
+                               action="store_true")
+
     argument_parser.parse_args()
     arguments = argument_parser.parse_args()
 
@@ -102,15 +126,12 @@ def main():
 
     # The actual progression through the website
     prof_session = initiate_session(config)
-    fields_html = prof_session.post(baseurl+"/select_projet.php")
-    # Parse the project page, and extra available fields
-    parser = FieldHTMLParser()
-    parser.feed(fields_html.content.decode("iso-8859-1"))
-    fields = parser.getFields()
-
-    print_fields(fields, sort_by_date=arguments.sorted, sort_by_open_projects=arguments.display_open_projects)
-    compilation_command = "" if arguments.no_compil else arguments.compil_command
-    send_work(fields, baseurl, work_id=arguments.id, filename=arguments.filename, command=compilation_command)
+    if arguments.func:
+        arguments.func(arguments, baseurl, prof_session)
+    else:
+        # No option specified, should be interactive
+        command_list(arguments, baseurl, prof_session)
+        command_upload(arguments, baseurl, prof_session)
 
 
 if __name__ == "__main__":

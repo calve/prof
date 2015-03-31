@@ -93,7 +93,7 @@ You can easily setup a postcommit hook for git, so it compile and upload your wo
 In your project, create ``.git/hooks/post-commit``
 
     git archive --output archive.tar.gz HEAD
-    prof --filename archive.tar.gz -i workid --compil-command "make"
+    prof upload archive.tar.gz --id workid --compil-command "make"
 
 and ``chmod +x .git/hooks/post-commit``
 
