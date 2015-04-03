@@ -105,7 +105,9 @@ def main():
     argument_parser.add_argument('--login',
                                  help='Your prof login',
                                  type=str)
-    argument_parser.add_argument('--version',
+    argument_parser.add_argument('-v', '--version',
+                                 action='version',
+                                 version="prof {version}".format(version=__version__),
                                  help='Print the current version')
     argument_parser.add_argument('-s', '--sorted',
                                  help='Sort project by due dates',
@@ -154,10 +156,6 @@ def main():
 
     # All parsers set !
     arguments = argument_parser.parse_args()
-
-    if arguments.version:
-        print("prof {version}".format(version=__version__))
-        return
 
     if check_update():
         print("An update is available. You should ``pip install --upgrade prof``")
