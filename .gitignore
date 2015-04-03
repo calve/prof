@@ -3,3 +3,4 @@ cookie
 samples/
 build/
 dist/
+/prof.egg-info/
